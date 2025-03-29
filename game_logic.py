@@ -85,16 +85,16 @@ class Player:
 
         theta = math.atan2(mouse_y, mouse_x)
         theta = math.degrees(theta)
-        if (0 <= theta <= 45 and 315 < theta < 360):
+        if (-45 <= theta <= 45):
             self._direction = "right"
         
         elif (45 < theta <= 135):
-            self._direction = "up:" 
+            self._direction = "up" 
         
-        elif (135 < theta <= 225):
+        elif (theta > 135 or -180 <= theta <= -135):
             self._direction = "left"
         
-        elif (225 < theta <= 315):
+        elif (-135 < theta < -45):
             self._direction = "down"
 
     # METHODS
