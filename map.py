@@ -1,4 +1,5 @@
 import pygame
+import config
 
 # Tile map with walls represented by 'W' and empty spaces by '.'
 test_map = [
@@ -9,10 +10,10 @@ test_map = [
 
 
 class Tiles:
-    def __init__(self, type: str, pos: tuple[int, int], TILE_SIZE):
+    def __init__(self, type: str, pos: tuple[int, int]):
         self.type = type  # Type of tile (Wall or Empty)
         self.pos = pos
-        self.rect = pygame.Rect(pos[0], pos[1], TILE_SIZE, TILE_SIZE)  # Position as a Rect
+        self.rect = pygame.Rect(pos[0], pos[1], config.TILE_SIZE, config.TILE_SIZE)  # Position as a Rect
 
     def draw(self, screen):
         # Draw tile on the screen at the specified position
@@ -22,7 +23,7 @@ class Tiles:
             pygame.draw.rect(screen, (0, 0, 0), self.rect)  # Black for empty space
 
 class Map:
-    def __init__(self, tile_map, TILE_SIZE):
+    def __init__(self, tile_map):
         self.tiles = []
         self.offset_x = 0  # Horizontal offset to move the map
         self.offset_y = 0  # Vertical offset to move the map
@@ -30,9 +31,9 @@ class Map:
         for row_index, row in enumerate(tile_map):
             for col_index, tile in enumerate(row):
                 tile_type = 'wall' if tile == 'W' else 'empty'  # Determine tile type
-                self.tiles.append(Tiles(tile_type, (col_index * TILE_SIZE, row_index * TILE_SIZE), TILE_SIZE))
+                self.tiles.append(Tiles(tile_type, (col_index * config.TILE_SIZE, row_index * config.TILE_SIZE)))
 
-    def update(self, event):
+    def update(self):
         # Move map with continuous scrolling while holding down the arrow keys
         movement_speed = 1  # Adjust movement speed (in pixels)
 
@@ -48,7 +49,7 @@ class Map:
         if keys[pygame.K_RIGHT]:
             self.offset_x -= movement_speed  # Move map left (pixel-based)
 
-    def draw(self, screen, SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE):
+    def draw(self, screen):
         # Draw the tiles on the screen based on the current offset
         for tile in self.tiles:
             # Adjust tile positions using the offsets (pixel-based movement)
