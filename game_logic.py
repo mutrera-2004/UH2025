@@ -1,4 +1,6 @@
 # create the classes for zombies/player/bullet
+import config
+import math
 
 RED = (255, 0, 0) # temp color
 YELLOW = (255,255,0)
@@ -37,12 +39,14 @@ class Player:
     _life: int
     _bullets: int
     _position: pygame.Rect
+    _facing: pygame.Rect
 
     def __init__(self, bullets: int, position: pygame.Rect):
         self._life = 100
         self._num_bullets = bullets
         self._curr_bullets = []
         self._position = position
+        self._direction = "right"
 
     @property
     def life(self):
@@ -68,6 +72,32 @@ class Player:
     def position(self, value: pygame.Rect):
         self._position = value
 
+    @property
+    def direction(self):
+        return self._direction
+
+    @property.setter
+    def direction(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        center_x, center_y = config.WIDTH // 2, config.HEIGHT //2
+
+        mouse_x = mouse_x - center_x
+        mouse_y = -(mouse_y - center_y) #flip so it behaves like cartesian plane
+
+        theta = math.atan2(mouse_x, mouse_y)
+
+        if (0 <= theta <= 45 and 315 < theta < 360):
+            self.position = "right"
+        
+        elif (45 < theta <= 135):
+            self.position = "up:" 
+        
+        elif (135 < theta <= 225):
+            self.position = "left"
+        
+        elif (225 < theta <= 315):
+            self.position = "down"
+
     # METHODS
     def fire(self):
         self.bullets -= 1
@@ -75,7 +105,7 @@ class Player:
         self._curr_bullets.append(bullet)
 
     # DRAW METHODS
-    def draw(self, SCREEN):
+    def draw(self, SCREEN, facing):
         pygame.draw.rect(SCREEN, RED, self.position, 10)
     
 
@@ -133,7 +163,7 @@ class Bullet:
     '''
     _position: pygame.Rect
 
-    def __init__(self, player_pos: pygame.Rect, speed: int):
+    def __init__(self, player_pos: pygame.Rect, dir: pygame.rect):
         self._position = player_pos
 
     @property 
@@ -147,5 +177,4 @@ class Bullet:
     
     # METHODS
     def update_bullet(self):
-        if nor 
-        self.position = 
+        pass
