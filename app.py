@@ -17,7 +17,6 @@ screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
 
 
 mapp = load_pygame(r'data/UH Map.tmx')
-print(mapp)
 
 running = True
 black = (0, 0, 0)
@@ -35,6 +34,7 @@ while running:
     screen.fill(black)
     test.draw(screen)
     test_player.draw(screen)
+    print(test_player.direction)
     pygame.display.flip()
 
 
