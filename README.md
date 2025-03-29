@@ -14,4 +14,10 @@ Run the following commands in the terminal.
 ```Python
 git clone https://www.github.com/mutrera-2004/UH2025.git
 pip install -r requirements.txt
+cd UH2025
+python3 app.py
 ```
+
+## Game Configuration
+
+The default difficulty is medium and the default game mode is endless.
