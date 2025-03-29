@@ -1,7 +1,7 @@
 # create the classes for zombies/player/bullet
-# temp color
 
-RED = (255, 0, 0)
+RED = (255, 0, 0) # temp color
+YELLOW = (255,255,0)
 
 import pygame
 
@@ -47,6 +47,11 @@ class Player:
     def position(self, value: pygame.Rect):
         self._position = value
 
+    # METHOD
+    def shoot(self, SCREEN):
+        self.bullets -= 1
+        bullet = Bullet(self.position)
+        
 
     # DRAW METHODS
     def draw(self, SCREEN):
@@ -107,7 +112,7 @@ class Bullet:
     '''
     _position: pygame.Rect
 
-    def __init__(self, player_pos: pygame.Rect):
+    def __init__(self, player_pos: pygame.Rect, speed: int):
         self._position = player_pos
 
     @property 
