@@ -85,7 +85,6 @@ class Player:
 
         theta = math.atan2(mouse_y, mouse_x)
         theta = math.degrees(theta)
-        print(theta)
         if (0 <= theta <= 45 and 315 < theta < 360):
             self._direction = "right"
         
