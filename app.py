@@ -35,6 +35,7 @@ while running:
     screen.fill(black)
     test.draw(screen)
     test_player.draw(screen)
+    print(test_player.direction)
     pygame.display.flip()
 
 
