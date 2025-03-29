@@ -4,6 +4,7 @@ import map
 import game_logic
 import config
 
+pygame.init()
 # Tile map with walls represented by 'W' and empty spaces by '.'
 test_map = [
     "..W..W",
@@ -16,7 +17,8 @@ running = True
 black = (0, 0, 0)
 
 
-test_player = game_logic.Player(100, pygame.rect.Rect(config.WIDTH // 2, config.HEIGHT // 2, config.TILE_SIZE, config.TILE_SIZE))
+test_player = game_logic.Player(100, pygame.rect.Rect(0, 0, config.TILE_SIZE, config.TILE_SIZE))
+test_player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
 test = map.Map(test_map)
 
 while running:
