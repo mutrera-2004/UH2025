@@ -3,9 +3,15 @@ import pygame
 import map
 import game_logic
 import config
+from pytmx.util_pygame import load_pygame
 
-pygame.init()
+
+# map = load_pygame(r'data/UH Map.tmx')
+# print(map)
+
+
 # Tile map with walls represented by 'W' and empty spaces by '.'
+pygame.init()
 test_map = [
     "..W..W",
     ".W...W",
