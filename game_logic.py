@@ -5,6 +5,26 @@ YELLOW = (255,255,0)
 
 import pygame
 
+class Game:
+    '''
+    Class representing the Game
+
+    Attributes:
+        - game_over [bool]: whether the game is over or not depending
+            on the player's health
+        - player [Player]: player
+        - Zombies [list[Zombie]]: list of existing zombies in the map
+    '''
+    _game_over = bool
+
+    def __init__(self):
+        self._game_over = False
+
+    @property
+    def game_over(self):
+        return self._game_over
+
+
 class Player:
     '''
     Class representing a Player
@@ -20,7 +40,8 @@ class Player:
 
     def __init__(self, bullets: int, position: pygame.Rect):
         self._life = 100
-        self._bullets = bullets
+        self._num_bullets = bullets
+        self._curr_bullets = []
         self._position = position
 
     @property
@@ -47,11 +68,11 @@ class Player:
     def position(self, value: pygame.Rect):
         self._position = value
 
-    # METHOD
-    def shoot(self, SCREEN):
+    # METHODS
+    def fire(self):
         self.bullets -= 1
         bullet = Bullet(self.position)
-        
+        self._curr_bullets.append(bullet)
 
     # DRAW METHODS
     def draw(self, SCREEN):
@@ -61,7 +82,7 @@ class Player:
 
 import pygame
 
-class Zombie:
+class Zombie(pygame.sprite.Sprite):
     '''
     Class representing a Zombie
 
@@ -122,3 +143,9 @@ class Bullet:
     @position.setter
     def position(self, new_position: pygame.Rect):
         self._position = new_position
+
+    
+    # METHODS
+    def update_bullet(self):
+        if nor 
+        self.position = 
