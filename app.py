@@ -17,7 +17,6 @@ screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
 
 
 mapp = load_pygame(r'data/UH Map.tmx')
-print(mapp)
 
 running = True
 black = (0, 0, 0)

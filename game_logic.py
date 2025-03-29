@@ -1,9 +1,31 @@
 # create the classes for zombies/player/bullet
-# temp color
+import config
+import math
 
-RED = (255, 0, 0)
+RED = (255, 0, 0) # temp color
+YELLOW = (255,255,0)
 
 import pygame
+
+class Game:
+    '''
+    Class representing the Game
+
+    Attributes:
+        - game_over [bool]: whether the game is over or not depending
+            on the player's health
+        - player [Player]: player
+        - Zombies [list[Zombie]]: list of existing zombies in the map
+    '''
+    _game_over = bool
+
+    def __init__(self):
+        self._game_over = False
+
+    @property
+    def game_over(self):
+        return self._game_over
+
 
 class Player:
     '''
@@ -17,11 +39,14 @@ class Player:
     _life: int
     _bullets: int
     _position: pygame.Rect
+    _facing: pygame.Rect
 
     def __init__(self, bullets: int, position: pygame.Rect):
         self._life = 100
-        self._bullets = bullets
+        self._num_bullets = bullets
+        self._curr_bullets = []
         self._position = position
+        self._direction = "right"
 
     @property
     def life(self):
@@ -47,16 +72,47 @@ class Player:
     def position(self, value: pygame.Rect):
         self._position = value
 
+    @property
+    def direction(self):
+        return self._direction
+
+    def set_direction(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        center_x, center_y = config.WIDTH // 2, config.HEIGHT //2
+
+        mouse_x = mouse_x - center_x
+        mouse_y = -(mouse_y - center_y) #flip so it behaves like cartesian plane
+
+        theta = math.atan2(mouse_y, mouse_x)
+        theta = math.degrees(theta)
+        if (0 <= theta <= 45 and 315 < theta < 360):
+            self._direction = "right"
+        
+        elif (45 < theta <= 135):
+            self._direction = "up:" 
+        
+        elif (135 < theta <= 225):
+            self._direction = "left"
+        
+        elif (225 < theta <= 315):
+            self._direction = "down"
+
+    # METHODS
+    def fire(self):
+        self.bullets -= 1
+        bullet = Bullet(self.position)
+        self._curr_bullets.append(bullet)
 
     # DRAW METHODS
     def draw(self, SCREEN):
+        self.set_direction()
         pygame.draw.rect(SCREEN, RED, self.position, 10)
     
 
 
 import pygame
 
-class Zombie:
+class Zombie(pygame.sprite.Sprite):
     '''
     Class representing a Zombie
 
@@ -107,7 +163,7 @@ class Bullet:
     '''
     _position: pygame.Rect
 
-    def __init__(self, player_pos: pygame.Rect):
+    def __init__(self, player_pos: pygame.Rect, dir: pygame.rect):
         self._position = player_pos
 
     @property 
@@ -117,3 +173,8 @@ class Bullet:
     @position.setter
     def position(self, new_position: pygame.Rect):
         self._position = new_position
+
+    
+    # METHODS
+    def update_bullet(self):
+        pass

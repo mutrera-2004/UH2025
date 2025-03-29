@@ -38,6 +38,7 @@ class Map:
             if isinstance(layer, pytmx.TiledTileLayer):
                 for x, y, gid in layer:
                     tile_image = self.tmx_data.get_tile_image_by_gid(gid)
+                    tile_properties = self.tmx_data.get_tile_properties_by_gid(gid)
                     if tile_image:
                         tile = Tiles(None, tile_image, (x * config.TILE_SIZE, y * config.TILE_SIZE))
                         self.tiles.append(tile)
@@ -54,21 +55,25 @@ class Map:
 
         # Check for key presses using pygame.key.get_pressed()
         keys = pygame.key.get_pressed()
+        offset_y = self.offset_x
+        offset_x = self.offset_y
         if pygame.time.get_ticks() - self.current_time >= 25:
             self.current_time = pygame.time.get_ticks()
-            if self.valid():
-                if keys[pygame.K_DOWN]:
-                    self.offset_y -= movement_speed  # Move map down (pixel-based)
-                if keys[pygame.K_UP]:
-                    self.offset_y += movement_speed  # Move map up (pixel-based)
-                if keys[pygame.K_LEFT]:
-                    self.offset_x += movement_speed  # Move map right (pixel-based)
-                if keys[pygame.K_RIGHT]:
-                    self.offset_x -= movement_speed  # Move map left (pixel-based)
+            #if self.valid():
+            if keys[pygame.K_DOWN]:
+                self.offset_y -= movement_speed  # Move map down (pixel-based)
+            if keys[pygame.K_UP]:
+                self.offset_y += movement_speed  # Move map up (pixel-based)
+            if keys[pygame.K_LEFT]:
+                self.offset_x += movement_speed  # Move map right (pixel-based)
+            if keys[pygame.K_RIGHT]:
+                self.offset_x -= movement_speed  # Move map left (pixel-based)
+
 
     def draw(self, screen):
         for tile in self.tiles:
             tile.rect.x = tile.pos[0] + self.offset_x
             tile.rect.y = tile.pos[1] + self.offset_y
             tile.draw(screen)
+            #pygame.draw.rect(screen, (255,0,0), tile.rect, 2)
 
