@@ -1,4 +1,8 @@
 # create the classes for zombies/player/bullet
+# temp color
+
+RED = (255, 0, 0)
+
 import pygame
 
 class Player:
@@ -42,6 +46,12 @@ class Player:
     @position.setter
     def position(self, value: pygame.Rect):
         self._position = value
+
+
+    # DRAW METHODS
+    def draw(self, SCREEN):
+        pygame.draw.rect(SCREEN, RED, self.position, 10)
+    
 
 
 import pygame
@@ -95,9 +105,9 @@ class Bullet:
     Attributes:
         - Position [pygame.rect] 
     '''
-    _position: pygame.rect
+    _position: pygame.Rect
 
-    def __init__(self, player_pos: pygame.rect):
+    def __init__(self, player_pos: pygame.Rect):
         self._position = player_pos
 
     @property 
@@ -105,5 +115,5 @@ class Bullet:
         return self._position
 
     @position.setter
-    def position(self, new_position: pygame.rect):
+    def position(self, new_position: pygame.Rect):
         self._position = new_position
