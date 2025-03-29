@@ -6,10 +6,6 @@ import config
 from pytmx.util_pygame import load_pygame
 
 
-# map = load_pygame(r'data/UH Map.tmx')
-# print(map)
-
-
 # Tile map with walls represented by 'W' and empty spaces by '.'
 pygame.init()
 test_map = [
@@ -19,13 +15,17 @@ test_map = [
 ]
 screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
 
+
+mapp = load_pygame(r'data/UH Map.tmx')
+print(mapp)
+
 running = True
 black = (0, 0, 0)
 
 
-test_player = game_logic.Player(100, pygame.rect.Rect(0, 0, config.TILE_SIZE, config.TILE_SIZE))
+test_player = game_logic.Player(100, config.PLAYER_RECT)
 test_player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
-test = map.Map(test_map)
+test = map.Map(mapp)
 
 while running:
     for event in pygame.event.get():
