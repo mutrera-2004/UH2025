@@ -76,7 +76,6 @@ class Player:
     def direction(self):
         return self._direction
 
-    @property.setter
     def direction(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
         center_x, center_y = config.WIDTH // 2, config.HEIGHT //2
@@ -105,7 +104,7 @@ class Player:
         self._curr_bullets.append(bullet)
 
     # DRAW METHODS
-    def draw(self, SCREEN, facing):
+    def draw(self, SCREEN):
         pygame.draw.rect(SCREEN, RED, self.position, 10)
     
 
