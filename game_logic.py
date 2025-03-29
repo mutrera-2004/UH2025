@@ -76,26 +76,26 @@ class Player:
     def direction(self):
         return self._direction
 
-    def direction(self):
+    def set_direction(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
         center_x, center_y = config.WIDTH // 2, config.HEIGHT //2
 
         mouse_x = mouse_x - center_x
         mouse_y = -(mouse_y - center_y) #flip so it behaves like cartesian plane
 
-        theta = math.atan2(mouse_x, mouse_y)
-
+        theta = math.atan2(mouse_y, mouse_x)
+        theta = math.degrees(theta)
         if (0 <= theta <= 45 and 315 < theta < 360):
-            self.position = "right"
+            self._direction = "right"
         
         elif (45 < theta <= 135):
-            self.position = "up:" 
+            self._direction = "up:" 
         
         elif (135 < theta <= 225):
-            self.position = "left"
+            self._direction = "left"
         
         elif (225 < theta <= 315):
-            self.position = "down"
+            self._direction = "down"
 
     # METHODS
     def fire(self):
@@ -105,6 +105,7 @@ class Player:
 
     # DRAW METHODS
     def draw(self, SCREEN):
+        self.set_direction()
         pygame.draw.rect(SCREEN, RED, self.position, 10)
     
 
