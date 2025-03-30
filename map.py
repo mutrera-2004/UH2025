@@ -128,7 +128,7 @@ class Map:
             #pygame.draw.rect(screen, (255,0,0), tile.rect, 2)
         dark_surface = pygame.Surface((config.WIDTH, config.HEIGHT))
         dark_surface.fill((0, 0, 0))
-        #dark_surface.set_alpha(180)
+        # dark_surface.set_alpha(180)
         glow_rect = glow.get_rect(center=config.PLAYER_RECT.center)
         dark_surface.blit(glow, glow_rect)
         screen.blit(dark_surface, (0, 0), special_flags=pygame.BLEND_RGB_MULT)

@@ -30,26 +30,3 @@ class Game:
     @property
     def game_over(self):
         return self._game_over
-
-
-    def set_direction(self):
-        mouse_x, mouse_y = config.find_mouse_coords()
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        center_x, center_y = config.WIDTH // 2, config.HEIGHT // 2
-
-        mouse_x = mouse_x - center_x
-        mouse_y = -(mouse_y - center_y)  # flip so it behaves like cartesian plane
-
-        theta = math.atan2(mouse_y, mouse_x)
-        theta = math.degrees(theta)
-        if -45 <= theta <= 45:
-            self._direction = Direction.RIGHT
-
-        elif 45 < theta <= 135:
-            self._direction = Direction.UP
-
-        elif theta > 135 or -180 <= theta <= -135:
-            self._direction = Direction.LEFT
-
-        elif -135 < theta < -45:
-            self._direction = Direction.DOWN
