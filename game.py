@@ -2,7 +2,7 @@ from collections import deque
 import pygame
 import random
 from map import Map, Tiles
-from game_logic import Player, Bullet
+from game_logic import Player, Bullet, Direction
 from zombies import Zombie
 
 class Game:
