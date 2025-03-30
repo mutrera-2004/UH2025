@@ -13,11 +13,6 @@ import os
 
 # Tile map with walls represented by 'W' and empty spaces by '.'
 pygame.init()
-test_map = [
-    "..W..W",
-    ".W...W",
-    ".W...W"
-]
 screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
 
 

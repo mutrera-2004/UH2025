@@ -2,13 +2,6 @@ import pygame
 import config
 import pytmx
 
-# Tile map with walls represented by 'W' and empty spaces by '.'
-test_map = [
-    "WWWWWW",
-    "W....W",
-    "W....W"
-]
-
 class Tiles:
     def __init__(self, type: str, tile_image, pos: tuple[int, int]):
         self.type = type  # Type of tile (Wall or Empty)
