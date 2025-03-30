@@ -105,9 +105,8 @@ def spawn_zombie(num_zombies: int, groups: pygame.sprite.Group):
         tile = test.walkable[tile_num]
         # tile.rect.x = tile.pos[0] + test.offset_x
         # tile.rect.y = tile.pos[1] + test.offset_y
-        zombie_rect = pygame.rect.Rect(tile.rect.topleft, (int(config.TILE_SIZE * 1.5), int(config.TILE_SIZE * 1.5)))
-        #zombie_rect.center = tile.rect.center
-        print(config.PLAYER_RECT.center)
+        zombie_rect = pygame.rect.Rect((0, 0), (int(config.TILE_SIZE * 1.5), int(config.TILE_SIZE * 1.5)))
+        zombie_rect.center = tile.rect.center
         valid_placing = True
         if config.distance(zombie_rect.center, config.PLAYER_RECT.center) <= 250:
             continue
@@ -139,8 +138,6 @@ while running:
     test.update()
     screen.fill(black)
     test.draw(screen)
-    for tile in test.walkable:
-        print(tile.rect.center)
     player.draw(screen)
     for bullet in bullets:
         bullet.update()

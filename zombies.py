@@ -141,6 +141,8 @@ class Zombie(pygame.sprite.Sprite):
             temp_rect.x += dx
             if self.valid_move(temp_rect, map):
                 self._position = (self._position[0] + dx, self._position[1])
+            else:
+                temp_rect.x -= dx
             temp_rect.y += dy
             if self.valid_move(temp_rect, map):
                 self._position = (self._position[0], self._position[1] + dy)
