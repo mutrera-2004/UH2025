@@ -21,6 +21,7 @@ class Zombie(pygame.sprite.Sprite):
         self._animation_timer = 0
         self._moving = False
         self._load_sprites()
+        self.movement_timer = pygame.time.get_ticks()
 
     def _load_sprites(self):
         """Load all animation sprites for the zombie."""
@@ -106,4 +107,43 @@ class Zombie(pygame.sprite.Sprite):
             self.previous_time = pygame.time.get_ticks()
             player._health = max(player._health - self._damage, 0)
             player.previous_time = pygame.time.get_ticks()
+
+
+    def valid_move(self, new_rect, map):
+        for tile in map.walls:
+            if new_rect.colliderect(tile.rect):
+                return False
+        return True
+
+    def move(self, map):
+        zombie_center = self._rect.center
+        player_center = config.PLAYER_RECT.center
+        
+        # Calculate movement direction
+        dx = 0
+        dy = 0
+        move_speed = 5
+        
+        # Horizontal movement
+        if player_center[0] < zombie_center[0]:
+            dx = -move_speed
+        elif player_center[0] > zombie_center[0]:
+            dx = move_speed
+            
+        # Vertical movement    
+        if player_center[1] < zombie_center[1]:
+            dy = -move_speed
+        elif player_center[1] > zombie_center[1]:
+            dy = move_speed
+        if pygame.time.get_ticks() - self.movement_timer >= 100:
+            self.movement_timer = pygame.time.get_ticks()
+            temp_rect = self._rect.copy()
+            temp_rect.x += dx
+            if self.valid_move(temp_rect, map):
+                self._position = (self._position[0] + dx, self._position[1])
+            temp_rect.y += dy
+            if self.valid_move(temp_rect, map):
+                self._position = (self._position[0], self._position[1] + dy)
+        
+
     
