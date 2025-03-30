@@ -115,6 +115,17 @@ def spawn_zombie(num_zombies: int, groups: pygame.sprite.Group):
         zombie = Zombie(30, zombie_rect.center, groups)
         zombie_counter -= 1
 
+mixer.init()
+sound1 = mixer.Sound("./audio/background.mp3")
+sound2 = mixer.Sound("./audio/zombie.mp3")
+sound3 = mixer.Sound("./audio/shotgun.mp3")
+
+channel1 = mixer.Channel(0)
+channel2 = mixer.Channel(1)
+channel3 = mixer.Channel(2)
+
+channel1.play(sound1, -1)
+channel2.play(sound2, -1)
 
 while running:
     for event in pygame.event.get():
@@ -137,6 +148,8 @@ while running:
         new_wave = True
         if curr_wave > 3:
             test.good_ending = True
+        sound2.stop()
+
 
     test.update()
     screen.fill(black)
