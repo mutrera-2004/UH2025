@@ -98,7 +98,7 @@ def move_zombie(zombie: Zombie):
     # Calculate movement direction
     dx = 0
     dy = 0
-    move_speed = 2
+    move_speed = 0.4
     
     # Horizontal movement
     if player_center[0] < zombie_center[0]:
@@ -163,6 +163,7 @@ while running:
     for zombie in zombies:
         zombie.draw(screen)
         zombie.update(test.offset_x, test.offset_y, player)
+        move_zombie(zombie)
     
     zombie_healthbars(zombies)
     generate_fog()
