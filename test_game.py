@@ -64,8 +64,6 @@ while running:
         zombie.draw(screen)
         zombie.update(test.offset_x, test.offset_y, player)
     
-    print(player._health)
-
     generate_fog()
         
     pygame.display.flip()

@@ -1,6 +1,7 @@
 from collections import deque
 import pygame
 import random
+import config
 from config import Direction, distance
 from map import Map, Tiles
 from bullet import Bullet
@@ -28,16 +29,16 @@ class Game:
         return self.player
     
     def spawn_zombie(self, num_zombies: int, groups: pygame.sprite.Group):
-        for _ in range(num_zombies):
+        zombie_counter = num_zombies
+        while (zombie_counter > 0):
             tile_num = random.randint(0, len(self.map.walkable) - 1)
             tile = self.map.walkable[tile_num]
             zombie = Zombie(30, tile.rect.center, groups)
+            if zombie._rect.colliderect(config.PLAYER_RECT):
+                continue
             self.zombies.add(zombie)
+            zombie_counter -= 1
 
-'''    def zombie_attack(self):
-        for zombie in self.zombies:
-            if distance(zombie.position.center, self.player.position.center) <= 5:
-                self.player.life -= zombie.damage'''
 
 def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: int):
     if dir == Direction.LEFT:
