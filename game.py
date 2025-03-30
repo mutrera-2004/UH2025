@@ -33,10 +33,19 @@ class Game:
         while (zombie_counter > 0):
             tile_num = random.randint(0, len(self.map.walkable) - 1)
             tile = self.map.walkable[tile_num]
-            zombie = Zombie(30, tile.rect.center, groups)
-            if zombie._rect.colliderect(config.PLAYER_RECT):
+            zombie_rect = pygame.rect.Rect((0, 0), (int(config.TILE_SIZE * 1.5), int(config.TILE_SIZE * 1.5)))
+            zombie_rect.center = tile.rect.center
+            valid_placing = True
+            if config.distance(zombie_rect.center, config.PLAYER_RECT.center) <= 400:
+                print(zombie_counter)
                 continue
-            self.zombies.add(zombie)
+            for wall in self.map.walls:
+                if wall.rect.colliderect(zombie_rect):
+                    valid_placing = False
+                    break
+            if not valid_placing:
+                continue
+            zombie = Zombie(30, tile.rect.center, groups)
             zombie_counter -= 1
 
 def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: int):

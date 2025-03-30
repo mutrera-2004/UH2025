@@ -43,3 +43,8 @@ def generate_glow(glow, radius):
     return surf
 
 glow = generate_glow(6, TILE_SIZE * 4)
+
+def distance(point1, point2):
+    x1, y1 = point1
+    x2, y2 = point2
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
