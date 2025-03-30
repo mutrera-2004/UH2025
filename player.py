@@ -47,7 +47,7 @@ class Player:
             config.Direction.UP: [],
             config.Direction.DOWN: []
         }
-        
+
         try:
             # Load right direction sprites
             self._sprites[config.Direction.RIGHT].append(pygame.image.load(os.path.join(sprite_path, "Hero_Right.png")))
