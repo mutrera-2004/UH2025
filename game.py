@@ -39,7 +39,6 @@ class Game:
             self.zombies.add(zombie)
             zombie_counter -= 1
 
-
 def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: int):
     if dir == Direction.LEFT:
         x -= 8

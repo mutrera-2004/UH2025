@@ -156,7 +156,6 @@ class Player:
         current_time = pygame.time.get_ticks()
         if current_time - self._animation_timer > 150:  # Change frame every 150ms
             max_frames = len(self._sprites[self._direction])
-            print(f"Direction: {self._direction}, Max frames: {max_frames}, Current frame: {self._animation_frame}, Moving: {self._moving}")
             
             if self._moving and max_frames > 1:
                 # When moving and we have animation frames, cycle through them
@@ -165,7 +164,6 @@ class Player:
                 # When standing still or no animation frames, use the first frame
                 self._animation_frame = 0
             self._animation_timer = current_time
-            print(f"New frame: {self._animation_frame}")
     
     def draw(self, screen):
         self.set_direction()
