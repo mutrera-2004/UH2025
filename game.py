@@ -14,6 +14,9 @@ class Game:
         self.player = player
         self.zombies = set()
         self.bullets: list[Bullet] = []
+        self.wave = 0
+        self.game_over = False
+        self.good_ending = False
     
     def fire_bullet(self):
         if self.player.bullets == 0:
@@ -23,7 +26,7 @@ class Game:
     
     def game_status(self) -> bool:
         """Returns `True` if the game is in progress and `False` if it's over"""
-        return self.player.life > 0
+        return self.game_over
 
     def get_player(self) -> Player:
         return self.player
@@ -38,6 +41,12 @@ class Game:
                 continue
             self.zombies.add(zombie)
             zombie_counter -= 1
+
+    def is_game_over(self):
+        if self.player.health <= 0:
+            self.game_over = True
+        
+        
 
 def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: int):
     if dir == Direction.LEFT:

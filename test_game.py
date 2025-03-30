@@ -22,7 +22,9 @@ mapp = load_pygame(r'data/UH Map.tmx')
 running = True
 black = (0, 0, 0)
 
-
+curr_wave = 1
+new_wave = True
+zombies_per_wave = [0, 10, 20, 30] # number of zombies that are spawned per wave and 3 waves only NOT 0 index
 player = Player(100, config.PLAYER_RECT)
 player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
 test = map.Map(mapp)
@@ -33,7 +35,6 @@ zombies = pygame.sprite.Group()
 previous_time = pygame.time.get_ticks()
 
 test_game = Game(test, player)
-test_game.spawn_zombie(10, zombies)
 
 def generate_fog():
     dark_surface = pygame.Surface((config.WIDTH, config.HEIGHT))
@@ -89,6 +90,16 @@ while running:
             previous_time = pygame.time.get_ticks()
             player.bullets -= 1
             bullets.add(Bullet(player.theta, zombies, test.walls, bullets))
+    
+    if new_wave:
+        test_game.spawn_zombie(zombies_per_wave[curr_wave], zombies)
+        new_wave = False
+
+    if not zombies:
+        curr_wave += 1
+        new_wave = True
+        if curr_wave > 3:
+            test.good_ending = True
 
     test.update()
     screen.fill(black)
