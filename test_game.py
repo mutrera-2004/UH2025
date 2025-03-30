@@ -132,10 +132,6 @@ while running:
             mixer.init()
             mixer.music.load("./audio/shotgun.mp3")
             mixer.music.play()
-    
-    if new_wave:
-        spawn_zombie(zombies_per_wave[curr_wave], zombies)
-        new_wave = False
 
     if not zombies:
         test_game.good_ending = True
