@@ -1,15 +1,24 @@
-# create the classes for zombies/player/bullet
+"Classes for game and player. Function for firing bullets."
+
+import math
+from enum import Enum
 import config
 import pygame
-import math
 
-RED = (255, 0, 0) # temp color
-YELLOW = (255,255,0)
+RED = (255, 0, 0)  # temp color
+YELLOW = (255, 255, 0)
+GREEN = (0, 0, 255)
 
-import pygame
+
+class Direction(Enum):
+    LEFT = 0
+    RIGHT = 1
+    UP = 2
+    DOWN = 3
+
 
 class Game:
-    '''
+    """
     Class representing the Game
 
     Attributes:
@@ -17,7 +26,8 @@ class Game:
             on the player's health
         - player [Player]: player
         - Zombies [list[Zombie]]: list of existing zombies in the map
-    '''
+    """
+
     _game_over = bool
 
     def __init__(self):
@@ -29,14 +39,15 @@ class Game:
 
 
 class Player:
-    '''
+    """
     Class representing a Player
 
     Attributes:
         - life [int]: percentage of health left
         - bullets [int]: number of bullets left on the gun
         - position [pygame.Rect]: position of the object
-    '''
+    """
+
     _life: int
     _bullets: int
     _position: pygame.Rect
@@ -45,9 +56,8 @@ class Player:
     def __init__(self, bullets: int, position: pygame.Rect):
         self._life = 100
         self._num_bullets = bullets
-        self._curr_bullets = []
         self._position = position
-        self._direction = "right"
+        self._direction = Direction.RIGHT
 
     @property
     def life(self):
@@ -63,8 +73,8 @@ class Player:
 
     @bullets.setter
     def bullets(self, value: int):
-        self._bullets = max(0, value)  
-        
+        self._bullets = max(0, value)
+
     @property
     def position(self):
         return self._position
@@ -79,99 +89,96 @@ class Player:
 
     def set_direction(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        center_x, center_y = config.WIDTH // 2, config.HEIGHT //2
+        center_x, center_y = config.WIDTH // 2, config.HEIGHT // 2
 
         mouse_x = mouse_x - center_x
-        mouse_y = -(mouse_y - center_y) #flip so it behaves like cartesian plane
+        mouse_y = -(mouse_y - center_y)  # flip so it behaves like cartesian plane
 
         theta = math.atan2(mouse_y, mouse_x)
         theta = math.degrees(theta)
-        if (-45 <= theta <= 45):
-            self._direction = "right"
-        
-        elif (45 < theta <= 135):
-            self._direction = "up" 
-        
-        elif (theta > 135 or -180 <= theta <= -135):
-            self._direction = "left"
-        
-        elif (-135 < theta < -45):
-            self._direction = "down"
+        if -45 <= theta <= 45:
+            self._direction = Direction.RIGHT
 
-    # METHODS
-    def fire(self):
-        self.bullets -= 1
-        bullet = Bullet(self.position)
-        self._curr_bullets.append(bullet)
+        elif 45 < theta <= 135:
+            self._direction = Direction.UP
 
-    # DRAW METHODS
-    def draw(self, SCREEN):
-        self.set_direction()
-        pygame.draw.rect(SCREEN, RED, self.position, 10)
+        elif theta > 135 or -180 <= theta <= -135:
+            self._direction = Direction.LEFT
 
-class Zombie(pygame.sprite.Sprite):
-    '''
-    Class representing a Zombie
+        elif -135 < theta < -45:
+            self._direction = Direction.DOWN
 
-    Attributes:
-        - Life [int]: percentage of health remaining
-        - Position [pygame.Rect]: position of the zombie
-        - Damage [int]: amount of damage the zombie does
-    '''
-    _life: int
-    _position: pygame.Rect
-    _damage: int
 
+class Zombie:
     def __init__(self, damage: int, position: pygame.Rect):
         self._life = 100
         self._damage = damage
+        self._direction = Direction.RIGHT
         self._position = position
 
     @property
     def life(self):
+        """Zombie's current health."""
         return self._life
 
     @life.setter
-    def life(self, value: int):
-        self._life = max(0, value) 
-
-    @property
-    def position(self):
-        return self._position
-
-    @position.setter
-    def position(self, value: pygame.Rect):
-        self._position = value
+    def life(self, new_health: int):
+        """Zombie's current health."""
+        self._life = max(0, min(new_health, 100))
 
     @property
     def damage(self):
+        """Damage per hit."""
         return self._damage
 
-    @damage.setter
-    def damage(self, value: int):
-        self._damage = max(0, value)
-
-class Bullet:
-    '''
-    Class representing a bullet
-
-    Attributes:
-        - Position [pygame.rect] 
-    '''
-    _position: pygame.Rect
-
-    def __init__(self, player_pos: pygame.Rect, dir: pygame.rect):
-        self._position = player_pos
-
-    @property 
+    @property
     def position(self):
         return self._position
 
     @position.setter
-    def position(self, new_position: pygame.Rect):
-        self._position = new_position
+    def position(self, pos: pygame.Rect):
+        self._position = pos
 
+    def set_direction(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        center_x, center_y = config.WIDTH // 2, config.HEIGHT // 2
+
+        mouse_x = mouse_x - center_x
+        mouse_y = -(mouse_y - center_y)  # flip so it behaves like cartesian plane
+
+        theta = math.atan2(mouse_y, mouse_x)
+        theta = math.degrees(theta)
+        if 0 <= theta <= 45 and 315 < theta < 360:
+            self._direction = Direction.RIGHT
+
+        elif 45 < theta <= 135:
+            self._direction = Direction.UP
+
+        elif 135 < theta <= 225:
+            self._direction = Direction.LEFT
+
+        elif 225 < theta <= 315:
+            self._direction = Direction.RIGHT
     
-    # METHODS
-    def update_bullet(self):
-        pass
+    def draw(self, surface: pygame.surface):
+        self.set_direction()
+        pygame.draw.rect(surface, GREEN, self.position, 10)
+
+
+def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: int):
+    if dir == Direction.LEFT:
+        x -= 8
+    elif dir == Direction.RIGHT:
+        x += 8
+    elif dir == Direction.DOWN:
+        y += 8
+    else:
+        y -= 8
+
+    for zombie in zombies:
+        p1, p2 = zombie.position.topleft, zombie.position.topright
+        p3, p4 = zombie.position.bottomleft, zombie.position.bottomright
+        if p1 <= x <= p2 and p3 <= y <= p4:
+            zombie.life -= damage
+            if zombie.life <= 0:
+                zombies.remove(zombie)
