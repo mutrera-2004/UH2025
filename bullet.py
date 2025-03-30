@@ -9,7 +9,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = pygame.rect.Rect(self.pos, (20, 20))
         self.angle = angle
         self.speed = 16
-        self.damage = 100
+        self.damage = 50
         angle = math.radians(angle)
         self.movex = self.speed * math.cos(angle)
         self.movey = self.speed * math.sin(angle)

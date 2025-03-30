@@ -22,6 +22,7 @@ class Zombie(pygame.sprite.Sprite):
         self._moving = False
         self._load_sprites()
         self.movement_timer = pygame.time.get_ticks()
+        self.hitbox = self._rect.inflate(-20, -20)
 
     def _load_sprites(self):
         """Load all animation sprites for the zombie."""
@@ -94,6 +95,7 @@ class Zombie(pygame.sprite.Sprite):
     def update(self, movex, movey, player: Player):
         self._rect.x = self._position[0] + movex
         self._rect.y = self._position[1] + movey
+        self.hitbox = self._rect.inflate(-50, -50)
 
         # Update direction based on movement
         if abs(movex) > abs(movey):
@@ -103,7 +105,7 @@ class Zombie(pygame.sprite.Sprite):
         
         self._moving = movex != 0 or movey != 0
 
-        if self._rect.colliderect(config.PLAYER_RECT) and pygame.time.get_ticks() - self.previous_time >= 1000:
+        if self.hitbox.colliderect(config.PLAYER_RECT) and pygame.time.get_ticks() - self.previous_time >= 1000:
             self.previous_time = pygame.time.get_ticks()
             player._health = max(player._health - self._damage, 0)
             player.previous_time = pygame.time.get_ticks()

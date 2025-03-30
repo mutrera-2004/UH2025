@@ -37,6 +37,7 @@ class Player:
         self._moving = False
         self._load_sprites()
         self.previous_time = pygame.time.get_ticks()
+        self.hitbox = config.PLAYER_RECT.inflate(-30, -30)
 
     def _load_sprites(self):
         """Load all animation sprites for the player."""

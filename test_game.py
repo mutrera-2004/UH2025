@@ -136,7 +136,7 @@ def spawn_zombie(num_zombies: int, groups: pygame.sprite.Group):
                 break
         if not valid_placing:
             continue
-        zombie = Zombie(30, zombie_rect.center, groups)
+        zombie = Zombie(15, zombie_rect.center, groups)
         zombie_counter -= 1
 
 AI_GF_DEST = config.PLAYER_RECT.center
@@ -164,10 +164,12 @@ sound1 = mixer.Sound("./audio/background.mp3")
 sound2 = mixer.Sound("./audio/zombie.mp3")
 sound3 = mixer.Sound("./audio/shotgun.mp3")
 sound4 = mixer.Sound("./audio/win.mp3")
+sound5 = mixer.Sound("./audio/Yay.mp3")
 
 channel1 = mixer.Channel(0)
 channel2 = mixer.Channel(1)
 channel3 = mixer.Channel(2)
+channel4 = mixer.Channel(3)
 
 channel1.play(sound1, -1)
 channel2.play(sound2, -1)
@@ -189,6 +191,9 @@ while running:
         new_wave = False
 
 
+    if TOUCH and pygame.time.get_ticks() - previous_time >= 3000:
+        running = False
+
     if not TOUCH:
         test.update()
     screen.fill(black)
@@ -206,7 +211,11 @@ while running:
     zombie_healthbars(zombies)
     if curr_wave > 1:
         if config.PLAYER_RECT.colliderect(rrect):
+            if not TOUCH:
+                previous_time = pygame.time.get_ticks()
             TOUCH = True
+            sound4.stop()
+            sound5.play()
             draw_ai(AI_GF_DEST, True)
         else:
             draw_ai(AI_GF_DEST, False)
@@ -216,7 +225,8 @@ while running:
     if not zombies:
         curr_wave += 1
         if curr_wave > 1:
-            draw_final_message()
+            if not TOUCH:
+                draw_final_message()
             player._health = 100
             draw_ai(AI_GF_DEST, False)
             test.good_ending = True
