@@ -28,7 +28,7 @@ test = map.Map(mapp)
 
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
             running = False
     test.update()
     screen.fill(black)
