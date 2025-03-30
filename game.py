@@ -1,7 +1,6 @@
 from collections import deque
 import pygame
 from map import Map
-import config
 from game_logic import Player, Zombie, Bullet
 
 class Game:
