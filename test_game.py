@@ -140,6 +140,7 @@ mixer.init()
 sound1 = mixer.Sound("./audio/background.mp3")
 sound2 = mixer.Sound("./audio/zombie.mp3")
 sound3 = mixer.Sound("./audio/shotgun.mp3")
+sound4 = mixer.Sound("./audio/win.mp3")
 
 channel1 = mixer.Channel(0)
 channel2 = mixer.Channel(1)
@@ -164,8 +165,6 @@ while running:
         spawn_zombie(zombies_per_wave[curr_wave], zombies)
         new_wave = False
 
-
-
     test.update()
     screen.fill(black)
     test.draw(screen)
@@ -189,5 +188,7 @@ while running:
             test.good_ending = True
             sound2.stop()
             sound1.stop()
+            # Wait for player to approach queen
+            sound4.play()
         
     pygame.display.flip()
