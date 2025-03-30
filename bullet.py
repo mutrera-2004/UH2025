@@ -1,1 +1,4 @@
-class Bullet
+import pygame
+
+class Bullet:
+    

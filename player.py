@@ -1,4 +1,5 @@
 import pygame
+import config
 
 class Player:
     """
@@ -14,7 +15,6 @@ class Player:
     _bullets: int
     _position: pygame.Rect
     _facing: pygame.Rect
-    _current_tile: Tiles
 
     def __init__(self, bullets: int, position: pygame.Rect):
         self._life = 100

@@ -1,7 +1,6 @@
 import config
 import math
 import pygame
-import game_logic
 
 GREEN = (0, 0, 255)
 
