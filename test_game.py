@@ -1,5 +1,6 @@
 import pygame
 import map
+import os
 from player import Player 
 from bullet import Bullet
 from zombies import Zombie
@@ -8,13 +9,6 @@ from game import Game
 from pytmx.util_pygame import load_pygame
 
 
-# Tile map with walls represented by 'W' and empty spaces by '.'
-pygame.init()
-test_map = [
-    "..W..W",
-    ".W...W",
-    ".W...W"
-]
 screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
 
 
@@ -23,19 +17,13 @@ mapp = load_pygame(r'data/UH Map.tmx')
 running = True
 black = (0, 0, 0)
 
-curr_wave = 1
-new_wave = True
-zombies_per_wave = [0, 10, 20, 30] # number of zombies that are spawned per wave and 3 waves only NOT 0 index
 player = Player(100, config.PLAYER_RECT)
 player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
 test = map.Map(mapp)
 bullets = pygame.sprite.Group()
 zombies = pygame.sprite.Group()
-# test_game = Game(test, player)
-# test_game.spawn_zombie()
-previous_time = pygame.time.get_ticks()
-
 test_game = Game(test, player)
+previous_time = pygame.time.get_ticks()
 
 while pygame.time.get_ticks() - previous_time <= 300:
     continue
@@ -69,6 +57,22 @@ def zombie_healthbars(zombies):
         current_health_width = health_bar_width * health_percentage
         pygame.draw.rect(screen, (0, 255, 0),
                         (health_bar_pos[0], health_bar_pos[1], current_health_width, health_bar_height))
+        
+
+def draw_final_message():
+    """Draws the final message sprite at the bottom of the screen."""
+    # Load the sprite from the "sprites" folder
+    sprite_path = os.path.join("sprites", "HELP.png")
+    final_message = pygame.image.load(sprite_path).convert_alpha()
+    
+    # Get the screen dimensions
+    screen_width, screen_height = screen.get_size()
+    final_message = pygame.transform.scale(final_message, (screen_width, 150))
+    sprite_rect = final_message.get_rect(midbottom=(screen_width // 2, screen_height))
+    
+    # Draw the sprite on the screen
+    screen.blit(final_message, sprite_rect)
+
 
 def player_healthbar():
     # Draw health bar in top left corner
@@ -100,16 +104,9 @@ while running:
             previous_time = pygame.time.get_ticks()
             player.bullets -= 1
             bullets.add(Bullet(player.theta, zombies, test.walls, bullets))
-    
-    if new_wave:
-        test_game.spawn_zombie(zombies_per_wave[curr_wave], zombies)
-        new_wave = False
 
     if not zombies:
-        curr_wave += 1
-        new_wave = True
-        if curr_wave > 3:
-            test.good_ending = True
+        test_game.good_ending = True
 
     test.update()
     screen.fill(black)
@@ -127,5 +124,7 @@ while running:
     zombie_healthbars(zombies)
     generate_fog()
     player_healthbar()
+    if test_game.good_ending:
+        draw_final_message()
         
     pygame.display.flip()

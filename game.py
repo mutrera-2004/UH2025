@@ -16,7 +16,7 @@ class Game:
         self.bullets: list[Bullet] = []
         self.wave = 1
         self.game_over = False
-        self.good_ending = False
+        self.good_ending = True
     
     def fire_bullet(self):
         if self.player.bullets == 0:
@@ -38,7 +38,6 @@ class Game:
             tile = self.map.walkable[tile_num]
             zombie_rect = pygame.rect.Rect((0, 0), (int(config.TILE_SIZE * 1.5), int(config.TILE_SIZE * 1.5)))
             zombie_rect.center = tile.rect.center
-            print(zombie_rect.center)
             valid_placing = True
             if config.distance(zombie_rect.center, config.PLAYER_RECT.center) <= 400:
                 continue
