@@ -8,10 +8,10 @@ from player import Player
 from zombies import Zombie
 
 class Game:
-    def __init__(self, map: Map, player: Player, zombies: set[Zombie]=set()):
+    def __init__(self, map: Map, player: Player):
         self.map = map
         self.player = player
-        self.zombies = zombies
+        self.zombies = set()
         self.bullets: list[Bullet] = []
     
     def fire_bullet(self):
@@ -27,11 +27,11 @@ class Game:
     def get_player(self) -> Player:
         return self.player
     
-    def spawn_zombie(self, num_zombies: int):
+    def spawn_zombie(self, num_zombies: int, groups: pygame.sprite.Group):
         for _ in range(num_zombies):
             tile_num = random.randint(0, len(self.map.walkable) - 1)
             tile = self.map.walkable[tile_num]
-            zombie = Zombie(30, tile.rect)
+            zombie = Zombie(30, tile.rect, groups)
             self.zombies.add(zombie)
 
     def zombie_attack(self):

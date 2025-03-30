@@ -1,5 +1,4 @@
 import pygame
-
 import map
 from player import Player 
 from bullet import Bullet
@@ -29,9 +28,8 @@ player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
 test = map.Map(mapp)
 bullets = pygame.sprite.Group()
 zombies = pygame.sprite.Group()
-# test_game = Game(test, player)
-# test_game.spawn_zombie()
-
+test_game = Game(test, player)
+test_game.spawn_zombie(10, zombies)
 
 while running:
     for event in pygame.event.get():
@@ -48,6 +46,10 @@ while running:
     for bullet in bullets:
         bullet.update()
         bullet.draw(screen)
+
+    for zombie in zombies:
+        zombie.draw(screen)
+        
     pygame.display.flip()
 
 
