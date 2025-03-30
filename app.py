@@ -1,7 +1,7 @@
 import pygame
+
 import map
-from player import Player 
-from bullet import Bullet
+from game_logic import Player, fire_bullet, Zombie
 import config
 from game import Game
 from pytmx.util_pygame import load_pygame
@@ -26,36 +26,28 @@ black = (0, 0, 0)
 player = Player(100, config.PLAYER_RECT)
 player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
 test = map.Map(mapp)
-bullets = pygame.sprite.Group()
-zombies = pygame.sprite.Group()
-# test_game = Game(test, player)
-# test_game.spawn_zombie()
-previous_time = pygame.time.get_ticks()
+test_game = Game(test, test_player)
+test_game.spawn_zombie()
+test_zombie = Zombie(30, config.ZOMBIE_RECT)
+zombies: set[Zombie] = set()
+zombies.add(test_zombie)
 
-test_game = Game(test, player)
-test_game.spawn_zombie(10, zombies)
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN and pygame.time.get_ticks() - previous_time >= 1000:
-            previous_time = pygame.time.get_ticks()
+        elif pygame.key.get_pressed()[pygame.MOUSEBUTTONDOWN]:
             player.bullets -= 1
-            bullets.add(Bullet(player.theta, zombies, test.walls, bullets))
-            
+            bullet_x, bullet_y = player.position.center
+            while bullet_x < config.WIDTH and bullet_y < config.HEIGHT:
+                fire_bullet(bullet_x, bullet_y, player.direction, zombies)
     test.update()
     screen.fill(black)
     test.draw(screen)
-    player.draw(screen)
-    for bullet in bullets:
-        bullet.update()
-        bullet.draw(screen)
-
+    pygame.draw.rect(screen, (255, 0, 0), player.position, 10)
     for zombie in zombies:
         zombie.draw(screen)
-        zombie.update(test.offset_x, test.offset_y)
-        
     pygame.display.flip()
 
 

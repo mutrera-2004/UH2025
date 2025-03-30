@@ -16,3 +16,7 @@ class Zombie(pygame.sprite.Sprite):
 
     def draw(self, screen):
         pygame.draw.rect(screen, (255, 0, 0), self._rect, 10)
+
+    def update(self, movex, movey):
+        self._rect.x = self._position[0] + movex
+        self._rect.y = self._position[1] + movey
