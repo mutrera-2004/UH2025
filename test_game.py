@@ -35,9 +35,17 @@ previous_time = pygame.time.get_ticks()
 test_game = Game(test, player)
 test_game.spawn_zombie(10, zombies)
 
+while pygame.time.get_ticks() - previous_time <= 300:
+    continue
+
+previous_time = pygame.time.get_ticks()
+
 def generate_fog():
     dark_surface = pygame.Surface((config.WIDTH, config.HEIGHT))
-    dark_surface.fill((0, 0, 0))
+    if pygame.time.get_ticks() - player.previous_time <= 250 or player.health <= 30:
+        dark_surface.fill((255, 0, 0))
+    else:
+        dark_surface.fill((0, 0, 0))
     # dark_surface.set_alpha(180)
     glow_rect = config.glow.get_rect(center=config.PLAYER_RECT.center)
     dark_surface.blit(config.glow, glow_rect)

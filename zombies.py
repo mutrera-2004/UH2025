@@ -105,4 +105,5 @@ class Zombie(pygame.sprite.Sprite):
         if self._rect.colliderect(config.PLAYER_RECT) and pygame.time.get_ticks() - self.previous_time >= 1000:
             self.previous_time = pygame.time.get_ticks()
             player._health = max(player._health - self._damage, 0)
+            player.previous_time = pygame.time.get_ticks()
     
