@@ -29,6 +29,3 @@ class Bullet(pygame.sprite.Sprite):
         for wall in self.walls:
             if wall.rect.colliderect(self.rect):
                 self.kill()
-    
-    
-

@@ -179,4 +179,3 @@ class Player:
             print(f"Error: Tried to access frame {self._animation_frame} for direction {self._direction}")
             print(f"Available frames: {len(self._sprites[self._direction])}")
             raise
-

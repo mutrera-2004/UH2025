@@ -43,26 +43,8 @@ def generate_fog():
     dark_surface.blit(config.glow, glow_rect)
     screen.blit(dark_surface, (0, 0), special_flags=pygame.BLEND_RGB_MULT)
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
-            running = False
-        if event.type == pygame.MOUSEBUTTONDOWN and pygame.time.get_ticks() - previous_time >= 1000:
-            previous_time = pygame.time.get_ticks()
-            player.bullets -= 1
-            bullets.add(Bullet(player.theta, zombies, test.walls, bullets))
-            
-    test.update()
-    screen.fill(black)
-    test.draw(screen)
-    player.draw(screen)
-    for bullet in bullets:
-        bullet.update()
-        bullet.draw(screen)
-
+def zombie_healthbars(zombies):
     for zombie in zombies:
-        zombie.draw(screen)
-        zombie.update(test.offset_x, test.offset_y, player)
         # Draw health bars for zombies
         health_bar_width = 40
         health_bar_height = 6
@@ -78,8 +60,7 @@ while running:
         pygame.draw.rect(screen, (0, 255, 0),
                         (health_bar_pos[0], health_bar_pos[1], current_health_width, health_bar_height))
 
-    generate_fog()
-
+def player_healthbar():
     # Draw health bar in top left corner
     health_bar_width = 300
     health_bar_height = 8
@@ -99,8 +80,30 @@ while running:
     font = pygame.font.Font(None, 24)
     percentage_text = font.render(f"{round(health_percentage * 100)}%", True, (255, 255, 255))
     screen.blit(percentage_text, (health_bar_pos[0] + health_bar_width + 5, health_bar_pos[1]))
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            running = False
+        if event.type == pygame.MOUSEBUTTONDOWN and pygame.time.get_ticks() - previous_time >= 1000:
+            previous_time = pygame.time.get_ticks()
+            player.bullets -= 1
+            bullets.add(Bullet(player.theta, zombies, test.walls, bullets))
+
+    test.update()
+    screen.fill(black)
+    test.draw(screen)
+    player.draw(screen)
+    for bullet in bullets:
+        bullet.update()
+        bullet.draw(screen)
+
+    for zombie in zombies:
+        zombie.draw(screen)
+        zombie.update(test.offset_x, test.offset_y, player)
+    
+    zombie_healthbars(zombies)
+    generate_fog()
+    player_healthbar()
         
     pygame.display.flip()
-
-
-pygame.quit()
