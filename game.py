@@ -1,7 +1,7 @@
 from collections import deque
 import pygame
 import random
-from config import Direction
+from config import Direction, distance
 from map import Map, Tiles
 from bullet import Bullet
 from player import Player
@@ -13,7 +13,6 @@ class Game:
         self.player = player
         self.zombies = zombies
         self.bullets: list[Bullet] = []
-        self.game_over = False
     
     def fire_bullet(self):
         if self.player.bullets == 0:
@@ -35,6 +34,10 @@ class Game:
             zombie = Zombie(30, tile.rect)
             self.zombies.add(zombie)
 
+    def zombie_attack(self):
+        for zombie in self.zombies:
+            if distance(zombie.position.center, self.player.position.center) <= 5:
+                self.player.life -= zombie.damage
 
 def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: int):
     if dir == Direction.LEFT:

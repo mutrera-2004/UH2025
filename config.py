@@ -1,5 +1,6 @@
-import pygame
 from enum import Enum
+import math
+import pygame
 
 WIDTH = 960
 HEIGHT = 640
@@ -23,3 +24,8 @@ def find_mouse_coords():
     relative_y = -(mouse_y - center_y)
 
     return (relative_x, relative_y)
+
+def distance(p1: tuple[int, int], p2: tuple[int, int]) -> float:
+    x1, y1 = p1
+    x2, y2 = p2
+    return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
