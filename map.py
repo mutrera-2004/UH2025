@@ -38,16 +38,21 @@ class Map:
             if isinstance(layer, pytmx.TiledTileLayer):
                 for x, y, gid in layer:
                     tile_image = self.tmx_data.get_tile_image_by_gid(gid)
-                    tile_properties = self.tmx_data.get_tile_properties_by_gid(gid)
+                    wall_flag = self.is_wall(x, y)
+                    print(wall_flag)
                     if tile_image:
                         tile = Tiles(None, tile_image, (x * config.TILE_SIZE, y * config.TILE_SIZE))
                         self.tiles.append(tile)
 
-    def valid(self):
-        for wall in self.walls:
-            if wall.rect.colliderect(config.PLAYER_RECT):
-                return False
-        return True
+    def is_wall(self, x, y):
+        layer_index = 1  # Layer 2 in Tiled is index 1 (0-based index)
+        layer = self.tmx_data.layers[layer_index]
+        
+        if isinstance(layer, pytmx.TiledTileLayer):
+            gid = layer.data[x, y]
+            return gid != 0  # If GID exists, it's a wall
+        
+        return False
 
     def update(self):
         # Move map with continuous scrolling while holding down the arrow keys

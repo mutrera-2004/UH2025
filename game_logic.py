@@ -1,5 +1,6 @@
 # create the classes for zombies/player/bullet
 import config
+import pygame
 import math
 
 RED = (255, 0, 0) # temp color
@@ -107,10 +108,6 @@ class Player:
     def draw(self, SCREEN):
         self.set_direction()
         pygame.draw.rect(SCREEN, RED, self.position, 10)
-    
-
-
-import pygame
 
 class Zombie(pygame.sprite.Sprite):
     '''
