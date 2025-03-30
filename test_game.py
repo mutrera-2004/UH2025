@@ -2,6 +2,7 @@ import pygame
 import map
 from player import Player 
 from bullet import Bullet
+from zombies import Zombie
 import config
 from game import Game
 from pytmx.util_pygame import load_pygame
@@ -36,9 +37,17 @@ previous_time = pygame.time.get_ticks()
 
 test_game = Game(test, player)
 
+while pygame.time.get_ticks() - previous_time <= 300:
+    continue
+
+previous_time = pygame.time.get_ticks()
+
 def generate_fog():
     dark_surface = pygame.Surface((config.WIDTH, config.HEIGHT))
-    dark_surface.fill((0, 0, 0))
+    if pygame.time.get_ticks() - player.previous_time <= 250 or player.health <= 30:
+        dark_surface.fill((255, 0, 0))
+    else:
+        dark_surface.fill((0, 0, 0))
     # dark_surface.set_alpha(180)
     glow_rect = config.glow.get_rect(center=config.PLAYER_RECT.center)
     dark_surface.blit(config.glow, glow_rect)
@@ -81,6 +90,48 @@ def player_healthbar():
     font = pygame.font.Font(None, 24)
     percentage_text = font.render(f"{round(health_percentage * 100)}%", True, (255, 255, 255))
     screen.blit(percentage_text, (health_bar_pos[0] + health_bar_width + 5, health_bar_pos[1]))
+
+def move_zombie(zombie: Zombie):
+    zombie_center = zombie._rect.center
+    player_center = config.PLAYER_RECT.center
+    
+    # Calculate movement direction
+    dx = 0
+    dy = 0
+    move_speed = 2
+    
+    # Horizontal movement
+    if player_center[0] < zombie_center[0]:
+        dx = -move_speed
+    elif player_center[0] > zombie_center[0]:
+        dx = move_speed
+        
+    # Vertical movement    
+    if player_center[1] < zombie_center[1]:
+        dy = -move_speed
+    elif player_center[1] > zombie_center[1]:
+        dy = move_speed
+        
+    # Check wall collisions before moving
+    test_rect = zombie._rect.copy()
+    test_rect.x += dx
+    test_rect.y += dy
+    
+    # Only move if won't hit a wall
+    can_move_x = True
+    can_move_y = True
+    for wall in test.walls:
+        if test_rect.colliderect(wall.rect):
+            if dx != 0:
+                can_move_x = False
+            if dy != 0:
+                can_move_y = False
+                
+    # Apply valid movements
+    if can_move_x:
+        zombie._position = (zombie._position[0] + dx, zombie._position[1])
+    if can_move_y:
+        zombie._position = (zombie._position[0], zombie._position[1] + dy)
 
 while running:
     for event in pygame.event.get():

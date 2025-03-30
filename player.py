@@ -36,6 +36,7 @@ class Player:
         self._animation_timer = 0
         self._moving = False
         self._load_sprites()
+        self.previous_time = pygame.time.get_ticks()
 
     def _load_sprites(self):
         """Load all animation sprites for the player."""
