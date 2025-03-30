@@ -12,7 +12,7 @@ test_map = [
 
 def generate_glow(glow, radius):
     surf = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
-    layers = 20
+    layers = 30
     glow = pygame.math.clamp(glow, 0, 200)
     for i in range(layers):
         k = i * glow
@@ -21,7 +21,7 @@ def generate_glow(glow, radius):
     
     return surf
 
-glow = generate_glow(15, config.TILE_SIZE * 4)
+glow = generate_glow(6, config.TILE_SIZE * 4)
 
 class Tiles:
     def __init__(self, type: str, tile_image, pos: tuple[int, int]):
