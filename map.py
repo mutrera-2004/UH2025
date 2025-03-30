@@ -17,11 +17,11 @@ def generate_glow(glow, radius):
     for i in range(layers):
         k = i * glow
         k = pygame.math.clamp(k, 0, 255)
-        pygame.draw.circle(surf, (k, k, k), surf.get_rect().center, radius - i * 3)
+        pygame.draw.circle(surf, (255, 255, 255, k), surf.get_rect().center, radius - i * 3)
     
     return surf
 
-glow = generate_glow(10, config.TILE_SIZE * 2)
+glow = generate_glow(100, config.TILE_SIZE * 2)
 
 class Tiles:
     def __init__(self, type: str, tile_image, pos: tuple[int, int]):
@@ -126,10 +126,10 @@ class Map:
             tile.rect.y = tile.pos[1] + self.offset_y
             tile.draw(screen)
             #pygame.draw.rect(screen, (255,0,0), tile.rect, 2)
-        # dark_surface = pygame.Surface((config.WIDTH, config.HEIGHT))
-        # dark_surface.fill((0, 0, 0))
-        # dark_surface.set_alpha(180)
-        # screen.blit(dark_surface, (0, 0))
-        # # Blit the light circle onto the screen (over the dark surface)
-        # screen.blit(glow, config.PLAYER_RECT.center)
+        dark_surface = pygame.Surface((config.WIDTH, config.HEIGHT))
+        dark_surface.fill((0, 0, 0))
+        dark_surface.set_alpha(180)
+        screen.blit(dark_surface, (0, 0))
+        glow_rect = glow.get_rect(center=config.PLAYER_RECT.center)
+        screen.blit(glow, glow_rect, special_flags=pygame.BLEND_RGBA_MULT)
 
