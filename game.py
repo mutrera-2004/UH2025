@@ -1,20 +1,18 @@
 from collections import deque
 import pygame
 import random
-import config
+from config import Direction
 from map import Map, Tiles
 from bullet import Bullet
 from player import Player
 from zombies import Zombie
 
 class Game:
-    def __init__(self, map: Map, player: Player=None, zombies: set[Zombie]=set()):
+    def __init__(self, map: Map, player: Player, zombies: set[Zombie]=set()):
         self.map = map
         self.player = player
         self.zombies = zombies
-        if self.player is None:
-            self.player = Player(30, pygame.Rect())
-        self.bullets = deque()
+        self.bullets: list[Bullet] = []
         self.game_over = False
     
     def fire_bullet(self):
@@ -31,19 +29,19 @@ class Game:
         return self.player
     
     def spawn_zombie(self, num_zombies: int):
-        for i in range(num_zombies):
+        for _ in range(num_zombies):
             tile_num = random.randint(0, len(self.map.walkable) - 1)
             tile = self.map.walkable[tile_num]
             zombie = Zombie(30, tile.rect)
             self.zombies.add(zombie)
 
 
-def fire_bullet(x: int, y: int, dir: config.Direction, zombies: set[Zombie], damage: int):
-    if dir == config.Direction.LEFT:
+def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: int):
+    if dir == Direction.LEFT:
         x -= 8
-    elif dir == config.Direction.RIGHT:
+    elif dir == Direction.RIGHT:
         x += 8
-    elif dir == config.Direction.DOWN:
+    elif dir == Direction.DOWN:
         y += 8
     else:
         y -= 8
