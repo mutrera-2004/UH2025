@@ -8,7 +8,7 @@ class Player:
     Class representing a Player
 
     Attributes:
-        - life [int]: percentage of health left
+        - health [int]: percentage of health left
         - bullets [int]: number of bullets left on the gun
         - position [pygame.Rect]: position of the object
         - sprites [dict]: dictionary containing animation sprites for each direction
@@ -17,7 +17,7 @@ class Player:
         - moving [bool]: whether the player is currently moving
     """
 
-    _life: int
+    _health: int
     _bullets: int
     _position: pygame.Rect
     _facing: pygame.Rect
@@ -27,7 +27,7 @@ class Player:
     _moving: bool
 
     def __init__(self, bullets: int, position: pygame.Rect):
-        self._life = 100
+        self._health = 100
         self._num_bullets = bullets
         self._position = position
         self._direction = config.Direction.RIGHT
@@ -76,12 +76,12 @@ class Player:
             raise
 
     @property
-    def life(self):
-        return self._life
+    def health(self):
+        return self._health
 
-    @life.setter
-    def life(self, new_health: int):
-        self._life = max(0, min(new_health, 100))
+    @health.setter
+    def health(self, new_health: int):
+        self._health = max(0, min(new_health, 100))
 
     @property
     def bullets(self):
@@ -150,7 +150,7 @@ class Player:
     @property
     def theta(self):
         return self._theta
-    
+
     def update_animation(self):
         """Update the animation frame based on time."""
         current_time = pygame.time.get_ticks()

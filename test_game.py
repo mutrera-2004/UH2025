@@ -54,7 +54,9 @@ while running:
 
     for zombie in zombies:
         zombie.draw(screen)
-        zombie.update(test.offset_x, test.offset_y)
+        zombie.update(test.offset_x, test.offset_y, player)
+    
+    print(player._health)
         
     pygame.display.flip()
 

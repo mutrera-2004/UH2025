@@ -34,10 +34,10 @@ class Game:
             zombie = Zombie(30, tile.rect.center, groups)
             self.zombies.add(zombie)
 
-    def zombie_attack(self):
+'''    def zombie_attack(self):
         for zombie in self.zombies:
             if distance(zombie.position.center, self.player.position.center) <= 5:
-                self.player.life -= zombie.damage
+                self.player.life -= zombie.damage'''
 
 def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: int):
     if dir == Direction.LEFT:

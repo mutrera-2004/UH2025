@@ -24,7 +24,7 @@ class Bullet(pygame.sprite.Sprite):
         # performence may be a lil slow
         for zombie in self.zombies:
             if zombie._rect.colliderect(self.rect):
-                zombie.health -= self.damage
+                zombie._health -= self.damage
                 self.kill()
         for wall in self.walls:
             if wall.rect.colliderect(self.rect):
