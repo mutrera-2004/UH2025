@@ -36,10 +36,12 @@ class Zombie(pygame.sprite.Sprite):
             # Load right direction sprites
             self._sprites[config.Direction.RIGHT].append(pygame.image.load(os.path.join(sprite_path, "Zombie_Right.png")))
             self._sprites[config.Direction.RIGHT].append(pygame.image.load(os.path.join(sprite_path, "Zombie_Right_Motion_1.png")))
+            self._sprites[config.Direction.RIGHT].append(pygame.image.load(os.path.join(sprite_path, "Zombie_Right.png")))
             
             # Load left direction sprites
             self._sprites[config.Direction.LEFT].append(pygame.image.load(os.path.join(sprite_path, "Zombie_Left.png")))
             self._sprites[config.Direction.LEFT].append(pygame.image.load(os.path.join(sprite_path, "Zombie_left_Motion_1.png")))
+            self._sprites[config.Direction.LEFT].append(pygame.image.load(os.path.join(sprite_path, "Zombie_Left.png")))
             
             # Load up direction sprites
             self._sprites[config.Direction.UP].append(pygame.image.load(os.path.join(sprite_path, "Zombie_Up.png")))
