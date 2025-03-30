@@ -35,6 +35,14 @@ previous_time = pygame.time.get_ticks()
 test_game = Game(test, player)
 test_game.spawn_zombie(10, zombies)
 
+def generate_fog():
+    dark_surface = pygame.Surface((config.WIDTH, config.HEIGHT))
+    dark_surface.fill((0, 0, 0))
+    # dark_surface.set_alpha(180)
+    glow_rect = config.glow.get_rect(center=config.PLAYER_RECT.center)
+    dark_surface.blit(config.glow, glow_rect)
+    screen.blit(dark_surface, (0, 0), special_flags=pygame.BLEND_RGB_MULT)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
@@ -55,6 +63,8 @@ while running:
     for zombie in zombies:
         zombie.draw(screen)
         zombie.update(test.offset_x, test.offset_y)
+
+    generate_fog()
         
     pygame.display.flip()
 

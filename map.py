@@ -9,20 +9,6 @@ test_map = [
     "W....W"
 ]
 
-
-def generate_glow(glow, radius):
-    surf = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
-    layers = 30
-    glow = pygame.math.clamp(glow, 0, 200)
-    for i in range(layers):
-        k = i * glow
-        k = pygame.math.clamp(k, 0, 200)
-        pygame.draw.circle(surf, (k, k, k), surf.get_rect().center, radius - i * 3)
-    
-    return surf
-
-glow = generate_glow(6, config.TILE_SIZE * 4)
-
 class Tiles:
     def __init__(self, type: str, tile_image, pos: tuple[int, int]):
         self.type = type  # Type of tile (Wall or Empty)
@@ -126,9 +112,3 @@ class Map:
             tile.rect.y = tile.pos[1] + self.offset_y
             tile.draw(screen)
             #pygame.draw.rect(screen, (255,0,0), tile.rect, 2)
-        dark_surface = pygame.Surface((config.WIDTH, config.HEIGHT))
-        dark_surface.fill((0, 0, 0))
-        # dark_surface.set_alpha(180)
-        glow_rect = glow.get_rect(center=config.PLAYER_RECT.center)
-        dark_surface.blit(glow, glow_rect)
-        screen.blit(dark_surface, (0, 0), special_flags=pygame.BLEND_RGB_MULT)
