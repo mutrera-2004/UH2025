@@ -36,6 +36,8 @@ class Game:
         while (zombie_counter > 0):
             tile_num = random.randint(0, len(self.map.walkable) - 1)
             tile = self.map.walkable[tile_num]
+            tile.rect.x = tile.pos[0] + self.map.offset_x
+            tile.rect.y = tile.pos[1] + self.map.offset_y
             zombie_rect = pygame.rect.Rect((0, 0), (int(config.TILE_SIZE * 1.5), int(config.TILE_SIZE * 1.5)))
             zombie_rect.center = tile.rect.center
             print(zombie_rect.center)

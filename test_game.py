@@ -6,6 +6,7 @@ from zombies import Zombie
 import config
 from game import Game
 from pytmx.util_pygame import load_pygame
+import random
 
 
 # Tile map with walls represented by 'W' and empty spaces by '.'
@@ -92,6 +93,29 @@ def player_healthbar():
     screen.blit(percentage_text, (health_bar_pos[0] + health_bar_width + 5, health_bar_pos[1]))
 
 
+def spawn_zombie(num_zombies: int, groups: pygame.sprite.Group):
+    zombie_counter = num_zombies
+    while (zombie_counter > 0):
+        tile_num = random.randint(0, len(test.walkable) - 1)
+        tile = test.walkable[tile_num]
+        # tile.rect.x = tile.pos[0] + test.offset_x
+        # tile.rect.y = tile.pos[1] + test.offset_y
+        zombie_rect = pygame.rect.Rect(tile.rect.topleft, (int(config.TILE_SIZE * 1.5), int(config.TILE_SIZE * 1.5)))
+        #zombie_rect.center = tile.rect.center
+        print(config.PLAYER_RECT.center)
+        valid_placing = True
+        if config.distance(zombie_rect.center, config.PLAYER_RECT.center) <= 250:
+            continue
+        for wall in test.walls:
+            if wall.rect.colliderect(zombie_rect):
+                valid_placing = False
+                break
+        if not valid_placing:
+            continue
+        zombie = Zombie(30, zombie_rect.center, groups)
+        zombie_counter -= 1
+
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
@@ -102,7 +126,7 @@ while running:
             bullets.add(Bullet(player.theta, zombies, test.walls, bullets))
     
     if new_wave:
-        test_game.spawn_zombie(zombies_per_wave[curr_wave], zombies)
+        spawn_zombie(zombies_per_wave[curr_wave], zombies)
         new_wave = False
 
     if not zombies:
@@ -114,6 +138,8 @@ while running:
     test.update()
     screen.fill(black)
     test.draw(screen)
+    for tile in test.walkable:
+        print(tile.rect.center)
     player.draw(screen)
     for bullet in bullets:
         bullet.update()
