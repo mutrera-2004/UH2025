@@ -14,7 +14,7 @@ class Game:
         self.player = player
         self.zombies = set()
         self.bullets: list[Bullet] = []
-        self.wave = 0
+        self.wave = 1
         self.game_over = False
         self.good_ending = False
     
@@ -38,9 +38,9 @@ class Game:
             tile = self.map.walkable[tile_num]
             zombie_rect = pygame.rect.Rect((0, 0), (int(config.TILE_SIZE * 1.5), int(config.TILE_SIZE * 1.5)))
             zombie_rect.center = tile.rect.center
+            print(zombie_rect.center)
             valid_placing = True
             if config.distance(zombie_rect.center, config.PLAYER_RECT.center) <= 400:
-                print(zombie_counter)
                 continue
             for wall in self.map.walls:
                 if wall.rect.colliderect(zombie_rect):
