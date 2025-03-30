@@ -28,6 +28,7 @@ test_player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
 test = map.Map(mapp)
 test_zombie = Zombie(30, config.ZOMBIE_RECT)
 
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
