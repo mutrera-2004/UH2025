@@ -2,6 +2,7 @@ import pygame
 
 import map
 import game_logic
+from zombies import Zombie
 import config
 from pytmx.util_pygame import load_pygame
 
@@ -25,6 +26,7 @@ black = (0, 0, 0)
 test_player = game_logic.Player(100, config.PLAYER_RECT)
 test_player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
 test = map.Map(mapp)
+test_zombie = Zombie(30, config.ZOMBIE_RECT)
 
 while running:
     for event in pygame.event.get():
@@ -34,6 +36,7 @@ while running:
     screen.fill(black)
     test.draw(screen)
     test_player.draw(screen)
+    test_zombie.draw(screen)
     pygame.display.flip()
 
 
