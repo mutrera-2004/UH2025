@@ -21,7 +21,7 @@ def generate_glow(glow, radius):
     
     return surf
 
-glow = generate_glow(20, config.TILE_SIZE)
+glow = generate_glow(10, config.TILE_SIZE * 2)
 
 class Tiles:
     def __init__(self, type: str, tile_image, pos: tuple[int, int]):
@@ -126,17 +126,10 @@ class Map:
             tile.rect.y = tile.pos[1] + self.offset_y
             tile.draw(screen)
             #pygame.draw.rect(screen, (255,0,0), tile.rect, 2)
-        dark_surface = pygame.Surface((config.WIDTH, config.HEIGHT))
-        dark_surface.fill((0, 0, 0))
-        screen.blit(dark_surface, (0, 0))
-        light_radius = 200  # The radius of the glow around the player
-        light_surface = pygame.Surface((light_radius * 2, light_radius * 2), pygame.SRCALPHA)
-        pygame.draw.circle(light_surface, (255, 255, 255), (light_radius, light_radius), light_radius)
-        light_surface.set_alpha(150)  # Adjust alpha to control the glow intensity
-
-        # Position the light around the player (centered on player)
-        light_pos = (config.PLAYER_RECT.centerx - light_radius, config.PLAYER_RECT.centery - light_radius)
-
-        # Blit the light circle onto the screen (over the dark surface)
-        screen.blit(light_surface, light_pos)
+        # dark_surface = pygame.Surface((config.WIDTH, config.HEIGHT))
+        # dark_surface.fill((0, 0, 0))
+        # dark_surface.set_alpha(180)
+        # screen.blit(dark_surface, (0, 0))
+        # # Blit the light circle onto the screen (over the dark surface)
+        # screen.blit(glow, config.PLAYER_RECT.center)
 
