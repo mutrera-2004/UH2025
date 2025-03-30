@@ -34,11 +34,11 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
             running = False
-        elif pygame.key.get_pressed()[pygame.MOUSEBUTTONDOWN]:
-            player.bullets -= 1
-            bullet_x, bullet_y = player.position.center
-            while bullet_x < config.WIDTH and bullet_y < config.HEIGHT:
-                fire_bullet(bullet_x, bullet_y, player.direction, zombies)
+        # elif pygame.key.get_pressed()[pygame.MOUSEBUTTONDOWN]:
+        #     player.bullets -= 1
+        #     bullet_x, bullet_y = player.position.center
+        #     while bullet_x < config.WIDTH and bullet_y < config.HEIGHT:
+        #         fire_bullet(bullet_x, bullet_y, player.direction, zombies)
     test.update()
     screen.fill(black)
     test.draw(screen)
