@@ -8,6 +8,7 @@ from zombies import Zombie
 import config
 from game import Game
 from pytmx.util_pygame import load_pygame
+import os
 
 
 # Tile map with walls represented by 'W' and empty spaces by '.'
@@ -28,6 +29,7 @@ black = (0, 0, 0)
 curr_wave = 1
 new_wave = True
 zombies_per_wave = [0, 10, 20, 30] # number of zombies that are spawned per wave and 3 waves only NOT 0 index
+AI_GF_DEST = 0
 player = Player(100, config.PLAYER_RECT)
 player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
 test = map.Map(mapp)
@@ -54,6 +56,25 @@ def generate_fog():
     glow_rect = config.glow.get_rect(center=config.PLAYER_RECT.center)
     dark_surface.blit(config.glow, glow_rect)
     screen.blit(dark_surface, (0, 0), special_flags=pygame.BLEND_RGB_MULT)
+
+def draw_final_message():
+    """Draws the final message sprite at the bottom of the screen."""
+    # Load the sprite from the "sprites" folder
+    sprite_path = os.path.join("sprites", "HELP.png")
+    final_message = pygame.image.load(sprite_path).convert_alpha()
+   
+    # Get the screen dimensions
+    screen_width, screen_height = screen.get_size()
+   
+    # Scale the sprite to match the screen width and desired height
+    final_message = pygame.transform.scale(final_message, (screen_width, 150))
+   
+    # Position the sprite at the bottom of the screen
+    sprite_rect = final_message.get_rect(midbottom=(screen_width // 2, screen_height))
+   
+    # Draw the sprite on the screen
+    screen.blit(final_message, sprite_rect)
+
 
 def zombie_healthbars(zombies):
     for zombie in zombies:
@@ -143,12 +164,6 @@ while running:
         spawn_zombie(zombies_per_wave[curr_wave], zombies)
         new_wave = False
 
-    if not zombies:
-        curr_wave += 1
-        new_wave = True
-        if curr_wave > 3:
-            test.good_ending = True
-        sound2.stop()
 
 
     test.update()
@@ -167,5 +182,12 @@ while running:
     zombie_healthbars(zombies)
     generate_fog()
     player_healthbar()
+    if not zombies:
+        curr_wave += 1
+        if curr_wave > 1:
+            draw_final_message()
+            test.good_ending = True
+            sound2.stop()
+            sound1.stop()
         
     pygame.display.flip()
