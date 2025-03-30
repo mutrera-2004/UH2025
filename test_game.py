@@ -53,6 +53,9 @@ def generate_fog():
     else:
         dark_surface.fill((0, 0, 0))
     # dark_surface.set_alpha(180)
+    # if curr_wave > 1:
+    #     gf_glow = config.glow.get_rect(center=AI_GF_DEST)
+    #     dark_surface.blit(config.glow, gf_glow)
     glow_rect = config.glow.get_rect(center=config.PLAYER_RECT.center)
     dark_surface.blit(config.glow, glow_rect)
     screen.blit(dark_surface, (0, 0), special_flags=pygame.BLEND_RGB_MULT)
@@ -125,7 +128,7 @@ def spawn_zombie(num_zombies: int, groups: pygame.sprite.Group):
         zombie_rect = pygame.rect.Rect((0, 0), (int(config.TILE_SIZE * 1.5), int(config.TILE_SIZE * 1.5)))
         zombie_rect.center = tile.rect.center
         valid_placing = True
-        if config.distance(zombie_rect.center, config.PLAYER_RECT.center) <= 250:
+        if config.distance(zombie_rect.center, config.PLAYER_RECT.center) <= 450:
             continue
         for wall in test.walls:
             if wall.rect.colliderect(zombie_rect):
@@ -135,6 +138,26 @@ def spawn_zombie(num_zombies: int, groups: pygame.sprite.Group):
             continue
         zombie = Zombie(30, zombie_rect.center, groups)
         zombie_counter -= 1
+
+AI_GF_DEST = config.PLAYER_RECT.center
+rrect = None
+TOUCH = False
+
+def draw_ai(AI_GF_DEST, touch):
+    global rrect
+    x = AI_GF_DEST[0] + test.offset_x
+    y = AI_GF_DEST[1] + test.offset_y
+    rrect = pygame.rect.Rect((x, y), (config.TILE_SIZE * 1.5, config.TILE_SIZE * 1.5))
+    if not touch:
+        AI_GF_IMAGE = pygame.image.load("sprites/AI_GF.png")
+    else:
+        AI_GF_IMAGE = pygame.image.load("sprites/AI_GF_YAYYYY.png")
+    scaled_size = (int(config.TILE_SIZE * 1.5), int(config.TILE_SIZE * 1.5))
+    AI_GF_IMAGE = pygame.transform.scale(AI_GF_IMAGE, scaled_size)
+    screen.blit(AI_GF_IMAGE, rrect)
+
+
+
 
 mixer.init()
 sound1 = mixer.Sound("./audio/background.mp3")
@@ -152,7 +175,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN and pygame.time.get_ticks() - previous_time >= 1000:
+        if event.type == pygame.MOUSEBUTTONDOWN and pygame.time.get_ticks() - previous_time >= 1000 and not TOUCH:
             previous_time = pygame.time.get_ticks()
             player.bullets -= 1
             bullets.add(Bullet(player.theta, zombies, test.walls, bullets))
@@ -165,8 +188,8 @@ while running:
         new_wave = False
 
 
-
-    test.update()
+    if not TOUCH:
+        test.update()
     screen.fill(black)
     test.draw(screen)
     player.draw(screen)
@@ -180,12 +203,21 @@ while running:
         zombie.move(test)
     
     zombie_healthbars(zombies)
-    generate_fog()
+    if curr_wave > 1:
+        if config.PLAYER_RECT.colliderect(rrect):
+            TOUCH = True
+            draw_ai(AI_GF_DEST, True)
+        else:
+            draw_ai(AI_GF_DEST, False)
+    if not TOUCH:
+        generate_fog()
     player_healthbar()
     if not zombies:
         curr_wave += 1
         if curr_wave > 1:
             draw_final_message()
+            player._health = 100
+            draw_ai(AI_GF_DEST, False)
             test.good_ending = True
             sound2.stop()
             sound1.stop()
