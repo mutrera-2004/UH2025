@@ -1,7 +1,6 @@
 "Classes for game and player. Function for firing bullets."
 
 import math
-from enum import Enum
 import config
 import pygame
 from map import Tiles
@@ -10,12 +9,6 @@ RED = (255, 0, 0)  # temp color
 YELLOW = (255, 255, 0)
 GREEN = (0, 0, 255)
 
-
-class Direction(Enum):
-    LEFT = 0
-    RIGHT = 1
-    UP = 2
-    DOWN = 3
 
 
 class Game:

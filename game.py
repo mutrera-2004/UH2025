@@ -1,8 +1,10 @@
 from collections import deque
 import pygame
 import random
+import config
 from map import Map, Tiles
-from game_logic import Player, Bullet, Direction
+from bullet import Bullet
+from player import Player
 from zombies import Zombie
 
 class Game:
@@ -36,12 +38,12 @@ class Game:
             self.zombies.add(zombie)
 
 
-def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: int):
-    if dir == Direction.LEFT:
+def fire_bullet(x: int, y: int, dir: config.Direction, zombies: set[Zombie], damage: int):
+    if dir == config.Direction.LEFT:
         x -= 8
-    elif dir == Direction.RIGHT:
+    elif dir == config.Direction.RIGHT:
         x += 8
-    elif dir == Direction.DOWN:
+    elif dir == config.Direction.DOWN:
         y += 8
     else:
         y -= 8

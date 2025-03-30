@@ -20,7 +20,7 @@ class Player:
         self._life = 100
         self._num_bullets = bullets
         self._position = position
-        self._direction = Direction.RIGHT
+        self._direction = config.Direction.RIGHT
 
     @property
     def life(self):

@@ -1,7 +1,7 @@
 import pygame
 
 import map
-from game_logic import Player, fire_bullet
+from player import Player 
 import config
 from game import Game
 from pytmx.util_pygame import load_pygame
@@ -26,8 +26,8 @@ black = (0, 0, 0)
 player = Player(100, config.PLAYER_RECT)
 player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
 test = map.Map(mapp)
-test_game = Game(test, player)
-test_game.spawn_zombie()
+# test_game = Game(test, player)
+# test_game.spawn_zombie()
 
 
 while running:
