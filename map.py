@@ -39,41 +39,70 @@ class Map:
                 for x, y, gid in layer:
                     tile_image = self.tmx_data.get_tile_image_by_gid(gid)
                     wall_flag = self.is_wall(x, y)
-                    print(wall_flag)
                     if tile_image:
                         tile = Tiles(None, tile_image, (x * config.TILE_SIZE, y * config.TILE_SIZE))
                         self.tiles.append(tile)
+                        if wall_flag:
+                            self.walls.append(tile)
 
     def is_wall(self, x, y):
         layer_index = 1  # Layer 2 in Tiled is index 1 (0-based index)
         layer = self.tmx_data.layers[layer_index]
         
         if isinstance(layer, pytmx.TiledTileLayer):
-            gid = layer.data[x, y]
+            gid = layer.data[y][x] 
             return gid != 0  # If GID exists, it's a wall
         
         return False
 
+    def valid(self, new_rect):
+        for tile in self.walls:
+            if new_rect.colliderect(tile.rect):
+                return False
+        return True
+    
     def update(self):
         # Move map with continuous scrolling while holding down the arrow keys
         movement_speed = 5  # Adjust movement speed (in pixels)
-
-        # Check for key presses using pygame.key.get_pressed()
-        keys = pygame.key.get_pressed()
-        offset_y = self.offset_x
-        offset_x = self.offset_y
+        keys = pygame.key.get_pressed()  # Get pressed keys
+        
+        # Current player position (assuming PLAYER_RECT is defined in config)
+        player_rect = config.PLAYER_RECT  # The player's current rectangle
+        
+        # Checking for key presses and updating the map offset
         if pygame.time.get_ticks() - self.current_time >= 25:
             self.current_time = pygame.time.get_ticks()
-            #if self.valid():
-            if keys[pygame.K_DOWN]:
-                self.offset_y -= movement_speed  # Move map down (pixel-based)
-            if keys[pygame.K_UP]:
-                self.offset_y += movement_speed  # Move map up (pixel-based)
-            if keys[pygame.K_LEFT]:
-                self.offset_x += movement_speed  # Move map right (pixel-based)
-            if keys[pygame.K_RIGHT]:
-                self.offset_x -= movement_speed  # Move map left (pixel-based)
+            
+            # Temporary rectangles to check for collisions
+            temp_rect = player_rect.copy()
 
+            if keys[pygame.K_DOWN]:
+                temp_rect.y += movement_speed  # Move player down
+                if self.valid(temp_rect):  # Check if new position is valid
+                    self.offset_y -= movement_speed  # Move map down (pixel-based)
+                else:
+                    temp_rect.y -= movement_speed
+            
+            if keys[pygame.K_UP]:
+                temp_rect.y -= movement_speed  # Move player up
+                if self.valid(temp_rect):  # Check if new position is valid
+                    self.offset_y += movement_speed  # Move map up (pixel-based)
+                else:
+                    temp_rect.y += movement_speed
+            
+            if keys[pygame.K_LEFT]:
+                temp_rect.x -= movement_speed  # Move player left
+                if self.valid(temp_rect):  # Check if new position is valid
+                    self.offset_x += movement_speed  # Move map right (pixel-based)
+                else:
+                    temp_rect.x += movement_speed
+            
+            if keys[pygame.K_RIGHT]:
+                temp_rect.x += movement_speed  # Move player right
+                if self.valid(temp_rect):  # Check if new position is valid
+                    self.offset_x -= movement_speed  # Move map left (pixel-based)
+                else:
+                    temp_rect.x -= movement_speed
 
     def draw(self, screen):
         for tile in self.tiles:
