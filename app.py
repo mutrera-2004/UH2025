@@ -30,7 +30,7 @@ test_zombie = Zombie(30, config.ZOMBIE_RECT)
 
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
             running = False
     test.update()
     screen.fill(black)
