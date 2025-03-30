@@ -1,7 +1,7 @@
 import pygame
 
 import map
-from game_logic import Player, fire_bullet, Zombie
+from game_logic import Player, fire_bullet
 import config
 from game import Game
 from pytmx.util_pygame import load_pygame
@@ -26,11 +26,8 @@ black = (0, 0, 0)
 player = Player(100, config.PLAYER_RECT)
 player._position.center = (config.WIDTH // 2, config.HEIGHT // 2)
 test = map.Map(mapp)
-test_game = Game(test, test_player)
+test_game = Game(test, player)
 test_game.spawn_zombie()
-test_zombie = Zombie(30, config.ZOMBIE_RECT)
-zombies: set[Zombie] = set()
-zombies.add(test_zombie)
 
 
 while running:
@@ -46,8 +43,6 @@ while running:
     screen.fill(black)
     test.draw(screen)
     pygame.draw.rect(screen, (255, 0, 0), player.position, 10)
-    for zombie in zombies:
-        zombie.draw(screen)
     pygame.display.flip()
 
 
