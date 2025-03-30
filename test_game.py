@@ -31,13 +31,15 @@ bullets = pygame.sprite.Group()
 zombies = pygame.sprite.Group()
 # test_game = Game(test, player)
 # test_game.spawn_zombie()
+previous_time = pygame.time.get_ticks()
 
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and pygame.time.get_ticks() - previous_time >= 1000:
+            previous_time = pygame.time.get_ticks()
             player.bullets -= 1
             bullets.add(Bullet(player.theta, zombies, test.walls, bullets))
             
