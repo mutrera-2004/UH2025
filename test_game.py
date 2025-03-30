@@ -37,11 +37,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
             running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            print("wbicnwofno")
+        if event.type == pygame.MOUSEBUTTONDOWN:
             player.bullets -= 1
             bullets.add(Bullet(player.theta, zombies, test.walls, bullets))
-            print(bullets)
             
     test.update()
     screen.fill(black)

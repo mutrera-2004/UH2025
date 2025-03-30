@@ -8,7 +8,7 @@ class Bullet(pygame.sprite.Sprite):
         self.pos = config.PLAYER_RECT.center
         self.rect = pygame.rect.Rect(self.pos, (20, 20))
         self.angle = angle
-        self.speed = 8
+        self.speed = 16
         self.damage = 30
         angle = math.radians(angle)
         self.movex = self.speed * math.cos(angle)

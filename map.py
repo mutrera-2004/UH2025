@@ -21,7 +21,7 @@ def generate_glow(glow, radius):
     
     return surf
 
-glow = generate_glow(15, config.TILE_SIZE * 3)
+glow = generate_glow(15, config.TILE_SIZE * 4)
 
 class Tiles:
     def __init__(self, type: str, tile_image, pos: tuple[int, int]):
@@ -92,28 +92,28 @@ class Map:
             # Temporary rectangles to check for collisions
             temp_rect = player_rect.copy()
 
-            if keys[pygame.K_DOWN]:
+            if keys[pygame.K_s]:
                 temp_rect.y += movement_speed  # Move player down
                 if self.valid(temp_rect):  # Check if new position is valid
                     self.offset_y -= movement_speed  # Move map down (pixel-based)
                 else:
                     temp_rect.y -= movement_speed
             
-            if keys[pygame.K_UP]:
+            if keys[pygame.K_w]:
                 temp_rect.y -= movement_speed  # Move player up
                 if self.valid(temp_rect):  # Check if new position is valid
                     self.offset_y += movement_speed  # Move map up (pixel-based)
                 else:
                     temp_rect.y += movement_speed
             
-            if keys[pygame.K_LEFT]:
+            if keys[pygame.K_a]:
                 temp_rect.x -= movement_speed  # Move player left
                 if self.valid(temp_rect):  # Check if new position is valid
                     self.offset_x += movement_speed  # Move map right (pixel-based)
                 else:
                     temp_rect.x += movement_speed
             
-            if keys[pygame.K_RIGHT]:
+            if keys[pygame.K_d]:
                 temp_rect.x += movement_speed  # Move player right
                 if self.valid(temp_rect):  # Check if new position is valid
                     self.offset_x -= movement_speed  # Move map left (pixel-based)
