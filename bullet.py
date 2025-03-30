@@ -23,7 +23,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.move_ip((self.movex, -self.movey))
         # performence may be a lil slow
         for zombie in self.zombies:
-            if zombie.rect.colliderect(self.rect):
+            if zombie._rect.colliderect(self.rect):
                 zombie.health -= self.damage
                 self.kill()
         for wall in self.walls:

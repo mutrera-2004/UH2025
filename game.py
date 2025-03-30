@@ -31,7 +31,7 @@ class Game:
         for _ in range(num_zombies):
             tile_num = random.randint(0, len(self.map.walkable) - 1)
             tile = self.map.walkable[tile_num]
-            zombie = Zombie(30, tile.rect, groups)
+            zombie = Zombie(30, tile.rect.center, groups)
             self.zombies.add(zombie)
 
     def zombie_attack(self):
