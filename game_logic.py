@@ -40,7 +40,7 @@ class Game:
 
 
     def set_direction(self):
-        mouse_x, mouse_y = find_mouse_coords()
+        mouse_x, mouse_y = config.find_mouse_coords()
         mouse_x, mouse_y = pygame.mouse.get_pos()
         center_x, center_y = config.WIDTH // 2, config.HEIGHT // 2
 
