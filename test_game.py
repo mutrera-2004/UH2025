@@ -1,4 +1,6 @@
+import random
 import pygame
+from pygame import mixer
 import map
 from player import Player 
 from bullet import Bullet
@@ -6,7 +8,6 @@ from zombies import Zombie
 import config
 from game import Game
 from pytmx.util_pygame import load_pygame
-import random
 
 
 # Tile map with walls represented by 'W' and empty spaces by '.'
@@ -124,6 +125,9 @@ while running:
             previous_time = pygame.time.get_ticks()
             player.bullets -= 1
             bullets.add(Bullet(player.theta, zombies, test.walls, bullets))
+            mixer.init()
+            mixer.music.load("./audio/shotgun.mp3")
+            mixer.music.play()
     
     if new_wave:
         spawn_zombie(zombies_per_wave[curr_wave], zombies)

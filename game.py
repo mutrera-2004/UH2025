@@ -56,8 +56,6 @@ class Game:
     def is_game_over(self):
         if self.player.health <= 0:
             self.game_over = True
-        
-        
 
 def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: int):
     if dir == Direction.LEFT:
