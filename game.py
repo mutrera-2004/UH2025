@@ -18,6 +18,7 @@ class Game:
         if self.player.bullets == 0:
             return
         bullet = Bullet(self.player.position)
+        self.bullets.append(bullet)
     
     def game_status(self) -> bool:
         """Returns `True` if the game is in progress and `False` if it's over"""
