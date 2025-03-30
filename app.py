@@ -29,6 +29,7 @@ test_zombie = Zombie(30, config.ZOMBIE_RECT)
 zombies: set[Zombie] = set()
 zombies.add(test_zombie)
 
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
