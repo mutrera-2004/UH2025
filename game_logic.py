@@ -182,3 +182,4 @@ def fire_bullet(x: int, y: int, dir: Direction, zombies: set[Zombie], damage: in
             zombie.life -= damage
             if zombie.life <= 0:
                 zombies.remove(zombie)
+            break
