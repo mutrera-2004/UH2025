@@ -63,10 +63,42 @@ while running:
     for zombie in zombies:
         zombie.draw(screen)
         zombie.update(test.offset_x, test.offset_y, player)
-    
-    print(player._health)
+        # Draw health bars for zombies
+        health_bar_width = 40
+        health_bar_height = 6
+        health_bar_pos = (zombie._rect.centerx - health_bar_width//2, zombie._rect.bottom + 5)
+        
+        # Background/empty bar (red)
+        pygame.draw.rect(screen, (255, 0, 0),
+                        (health_bar_pos[0], health_bar_pos[1], health_bar_width, health_bar_height))
+        
+        # Filled portion of health bar (green) 
+        health_percentage = zombie._health / 100
+        current_health_width = health_bar_width * health_percentage
+        pygame.draw.rect(screen, (0, 255, 0),
+                        (health_bar_pos[0], health_bar_pos[1], current_health_width, health_bar_height))
 
     generate_fog()
+
+    # Draw health bar in top left corner
+    health_bar_width = 300
+    health_bar_height = 8
+    health_bar_pos = (10, 10)  # Fixed position in top left
+    
+    # Background/empty bar (red)
+    pygame.draw.rect(screen, (255, 0, 0), 
+                    (health_bar_pos[0], health_bar_pos[1], health_bar_width, health_bar_height))
+    
+    # Filled portion of health bar (green)
+    health_percentage = player.health / 100
+    current_health_width = health_bar_width * health_percentage
+    pygame.draw.rect(screen, (0, 255, 0),
+                    (health_bar_pos[0], health_bar_pos[1], current_health_width, health_bar_height))
+    
+    # Draw percentage text
+    font = pygame.font.Font(None, 24)
+    percentage_text = font.render(f"{round(health_percentage * 100)}%", True, (255, 255, 255))
+    screen.blit(percentage_text, (health_bar_pos[0] + health_bar_width + 5, health_bar_pos[1]))
         
     pygame.display.flip()
 
