@@ -66,10 +66,11 @@ class Player:
             self._sprites[config.Direction.DOWN].append(pygame.image.load(os.path.join(sprite_path, "Hero_Down_motion_1.png")))  # Note the lowercase 'm'
             self._sprites[config.Direction.DOWN].append(pygame.image.load(os.path.join(sprite_path, "Hero_Down_Motion_2.png")))
             
-            # Scale all sprites to match tile size
+            # Scale all sprites to 1.5x tile size
+            scaled_size = (int(config.TILE_SIZE * 1.5), int(config.TILE_SIZE * 1.5))
             for direction in self._sprites:
                 for i in range(len(self._sprites[direction])):
-                    self._sprites[direction][i] = pygame.transform.scale(self._sprites[direction][i], (config.TILE_SIZE, config.TILE_SIZE))
+                    self._sprites[direction][i] = pygame.transform.scale(self._sprites[direction][i], scaled_size)
         except pygame.error as e:
             print(f"Error loading sprites: {e}")
             raise
