@@ -47,7 +47,7 @@ class Player:
         self._num_bullets = bullets
         self._curr_bullets = []
         self._position = position
-        self._direction = "right"
+        self.direction = "right"
 
     @property
     def life(self):
