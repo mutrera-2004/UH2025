@@ -1,5 +1,4 @@
 import pygame
-
 import map
 from player import Player 
 from bullet import Bullet
@@ -33,6 +32,8 @@ zombies = pygame.sprite.Group()
 # test_game.spawn_zombie()
 previous_time = pygame.time.get_ticks()
 
+test_game = Game(test, player)
+test_game.spawn_zombie(10, zombies)
 
 while running:
     for event in pygame.event.get():
@@ -50,6 +51,10 @@ while running:
     for bullet in bullets:
         bullet.update()
         bullet.draw(screen)
+
+    for zombie in zombies:
+        zombie.draw(screen)
+        
     pygame.display.flip()
 
 
