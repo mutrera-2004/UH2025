@@ -8,6 +8,21 @@ YELLOW = (255,255,0)
 
 import pygame
 
+# helper functions
+def find_mouse_coords():
+    '''
+    Calculates the coordinates of the mouse with respect to the 
+    center of the screen (player position). The coordinates are
+    in terms of the cartesian plane
+    '''
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    center_x, center_y = config.WIDTH // 2, config.HEIGHT //2
+
+    mouse_x = mouse_x - center_x
+    mouse_y = -(mouse_y - center_y) #flip so it behaves like cartesian plane
+
+    return (mouse_x, mouse_y)
+
 class Game:
     '''
     Class representing the Game
@@ -78,11 +93,7 @@ class Player:
         return self._direction
 
     def set_direction(self):
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        center_x, center_y = config.WIDTH // 2, config.HEIGHT //2
-
-        mouse_x = mouse_x - center_x
-        mouse_y = -(mouse_y - center_y) #flip so it behaves like cartesian plane
+        mouse_x, mouse_y = find_mouse_coords()
 
         theta = math.atan2(mouse_y, mouse_x)
         theta = math.degrees(theta)
@@ -109,47 +120,6 @@ class Player:
         self.set_direction()
         pygame.draw.rect(SCREEN, RED, self.position, 10)
 
-class Zombie(pygame.sprite.Sprite):
-    '''
-    Class representing a Zombie
-
-    Attributes:
-        - Life [int]: percentage of health remaining
-        - Position [pygame.Rect]: position of the zombie
-        - Damage [int]: amount of damage the zombie does
-    '''
-    _life: int
-    _position: pygame.Rect
-    _damage: int
-
-    def __init__(self, damage: int, position: pygame.Rect):
-        self._life = 100
-        self._damage = damage
-        self._position = position
-
-    @property
-    def life(self):
-        return self._life
-
-    @life.setter
-    def life(self, value: int):
-        self._life = max(0, value) 
-
-    @property
-    def position(self):
-        return self._position
-
-    @position.setter
-    def position(self, value: pygame.Rect):
-        self._position = value
-
-    @property
-    def damage(self):
-        return self._damage
-
-    @damage.setter
-    def damage(self, value: int):
-        self._damage = max(0, value)
 
 class Bullet:
     '''

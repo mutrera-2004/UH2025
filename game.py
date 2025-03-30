@@ -1,8 +1,10 @@
 from collections import deque
 import pygame
-from map import Map
+import random
+from map import Map, Tiles
 import config
-from game_logic import Player, Zombie, Bullet
+from game_logic import Player, Bullet
+from zombies import Zombie
 
 class Game:
     def __init__(self, map: Map, player: Player=None, zombies: set[Zombie]=set()):
@@ -27,5 +29,8 @@ class Game:
     def get_player(self) -> Player:
         return self.player
     
-    def spawn_zombie(self, zombie: Zombie):
+    def spawn_zombie(self):
+        tile_num = random.randint(0, len(self.map.walkable) - 1)
+        tile = self.map.walkable[tile_num]
+        zombie = Zombie(30, tile.rect)
         self.zombies.add(zombie)
